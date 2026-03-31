@@ -1,38 +1,37 @@
-import { Vue, Component, Prop } from 'vue-property-decorator';
 import { DataPoint } from '@/types';
-export { DataPoint } from '@/types';
+export type { DataPoint } from '@/types';
 import CountTo from '@/components/CountTo';
 
-@Component
-export default class extends Vue {
-  @Prop() sections!: DataPoint[];
-  @Prop() columns!: string;
-  @Prop() decimals!: number;
+interface LegendProps {
+  sections: DataPoint[];
+  columns?: string;
+  decimals?: number;
+  className?: string;
+}
 
-  render() {
-    const gridTemplateColumns = this.columns || this.sections.map(() => '1fr').join(' ');
+export default function Legend({ sections, columns, decimals, className }: LegendProps) {
+  const gridTemplateColumns = columns || sections.map(() => '1fr').join(' ');
 
-    const legends = this.sections.map(data => (
-      <div>
-        <div class="legend__color" style={{ '--color': `var(--${data.color})` }} />
-        <div class="legend__title">
-          {data.title}
-        </div>
-        <div class="legend__value">
-          <CountTo
-            decimals={this.decimals}
-            duration={Math.random() * 1000 + 500}
-            endVal={data.value < 1 ? data.value * 100 : data.value}
-            suffix={data.value < 1 ? ' %' : ''}
-          />
-        </div>
+  const legends = sections.map((data, i) => (
+    <div key={i}>
+      <div className="legend__color" style={{ '--color': `var(--${data.color})` } as React.CSSProperties} />
+      <div className="legend__title">
+        {data.title}
       </div>
-    ));
-
-    return (
-      <div class="legend" style={{ gridTemplateColumns }}>
-        {legends}
+      <div className="legend__value">
+        <CountTo
+          decimals={decimals}
+          duration={Math.random() * 1000 + 500}
+          endVal={data.value < 1 ? data.value * 100 : data.value}
+          suffix={data.value < 1 ? ' %' : ''}
+        />
       </div>
-    );
-  }
+    </div>
+  ));
+
+  return (
+    <div className={['legend', className].filter(Boolean).join(' ')} style={{ gridTemplateColumns }}>
+      {legends}
+    </div>
+  );
 }

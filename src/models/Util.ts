@@ -4,7 +4,7 @@ export class Util {
   }
 
   static waitFor(duration: number): Promise<number> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const timeout: number = window.setTimeout(
         () => {
           resolve(timeout);

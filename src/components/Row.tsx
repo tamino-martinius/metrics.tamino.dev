@@ -1,4 +1,4 @@
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { ReactNode } from 'react';
 
 export enum RowType {
   FULL = 'row--full',
@@ -6,19 +6,21 @@ export enum RowType {
   LAST_THIRD = 'row--last-third',
 }
 
-@Component
-export default class extends Vue {
-  @Prop() type!: RowType;
+interface RowProps {
+  type?: RowType;
+  children?: ReactNode;
+  first?: ReactNode;
+  last?: ReactNode;
+}
 
-  render() {
-    const classes = ['row', this.type || RowType.FULL];
+export default function Row({ type, children, first, last }: RowProps) {
+  const classes = ['row', type || RowType.FULL];
 
-    return (
-      <div class={classes.join(' ')}>
-        {this.$slots.default}
-        {this.$slots.first}
-        {this.$slots.last}
-      </div>
-    );
-  }
+  return (
+    <div className={classes.join(' ')}>
+      {children}
+      {first}
+      {last}
+    </div>
+  );
 }

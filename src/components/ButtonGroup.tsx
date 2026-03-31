@@ -1,32 +1,34 @@
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { useState } from 'react';
 
-@Component
-export default class extends Vue {
-  @Prop() labels!: string[];
-  @Prop() values!: any[];
-  active: number = this.labels.length - 1;
+interface ButtonGroupProps {
+  labels: string[];
+  values?: any[];
+  onValueChanged?: (value: any) => void;
+}
 
-  buttonClickHandler(index: number) {
-    this.active = index;
-    this.$emit('indexChanged', index);
-    this.$emit('labelChanged', this.labels[index]);
-    this.$emit('valueChanged', (this.values || this.labels)[index]);
+export default function ButtonGroup({ labels, values, onValueChanged }: ButtonGroupProps) {
+  const [active, setActive] = useState(labels.length - 1);
+
+  function handleClick(index: number) {
+    setActive(index);
+    if (onValueChanged) {
+      onValueChanged((values || labels)[index]);
+    }
   }
 
-  render() {
-    const buttons = this.labels.map((label, i) => (
-      <button
-        onClick={this.buttonClickHandler.bind(this, i)}
-        class={`button-group__button${i === this.active ? ' button-group__button--active' : ''}`}
-      >
-        {label}
-      </button>
-    ));
+  const buttons = labels.map((label, i) => (
+    <button
+      key={i}
+      onClick={() => handleClick(i)}
+      className={`button-group__button${i === active ? ' button-group__button--active' : ''}`}
+    >
+      {label}
+    </button>
+  ));
 
-    return (
-      <div class="button-group">
-        {buttons}
-      </div>
-    );
-  }
+  return (
+    <div className="button-group">
+      {buttons}
+    </div>
+  );
 }

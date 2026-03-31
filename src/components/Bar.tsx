@@ -1,33 +1,36 @@
-import { Vue, Component, Prop } from 'vue-property-decorator';
 import { DataPoint } from '@/types';
-export { DataPoint } from '@/types';
+export type { DataPoint } from '@/types';
 
 export enum BarType {
   HORIZONTAL = 'bar--horizontal',
   VERTICAL = 'bar--vertical',
 }
 
-@Component
-export default class extends Vue {
-  @Prop() sections!: DataPoint[];
-  @Prop() type!: BarType | undefined;
+interface BarProps {
+  sections: DataPoint[];
+  type?: BarType;
+  style?: React.CSSProperties;
+}
 
-  render() {
-    const type = this.type || BarType.HORIZONTAL;
+export default function Bar({ sections, type, style }: BarProps) {
+  const barType = type || BarType.HORIZONTAL;
 
-    const sections = this.sections.map(data => (
-      <div class={['bar__section', type]} style={{ '--color': `var(--${data.color})` }} >
-        {data.value.toLocaleString()}
-      </div>
-    ));
+  const sectionElements = sections.map((data, i) => (
+    <div
+      key={i}
+      className={['bar__section', barType].join(' ')}
+      style={{ '--color': `var(--${data.color})` } as React.CSSProperties}
+    >
+      {data.value.toLocaleString()}
+    </div>
+  ));
 
-    const weights = this.sections.map(data => `${data.value}fr`).join(' ');
-    const template = type === BarType.HORIZONTAL ? 'gridTemplateColumns' : 'gridTemplateRows';
+  const weights = sections.map(data => `${data.value}fr`).join(' ');
+  const template = barType === BarType.HORIZONTAL ? 'gridTemplateColumns' : 'gridTemplateRows';
 
-    return (
-      <div class="bar" style={{ [template]: weights }}>
-        {sections}
-      </div>
-    );
-  }
+  return (
+    <div className="bar" style={{ [template]: weights, ...style }}>
+      {sectionElements}
+    </div>
+  );
 }

@@ -1,34 +1,30 @@
-import { Vue, Component, Prop } from 'vue-property-decorator';
-import Util from '@/models/Util';
+import { ReactNode } from 'react';
 
-const MIN_SHOW_DISTANCE_DURATION = 30;
+interface CardProps {
+  title: string;
+  className?: string;
+  children?: ReactNode;
+  titleSlot?: ReactNode;
+  footerSlot?: ReactNode;
+}
 
-@Component
-export default class Card extends Vue {
-  static lastShow = Date.now();
+export default function Card({ title, className, children, titleSlot, footerSlot }: CardProps) {
+  const footer = footerSlot ? (
+    <div className="card__footer">
+      {footerSlot}
+    </div>
+  ) : undefined;
 
-  @Prop() title!: string;
-
-  render() {
-    const footer = this.$slots.footer ? (
-      <div class="card__footer">
-        {this.$slots.footer}
+  return (
+    <div className={['card', className].filter(Boolean).join(' ')}>
+      <div className="card__title">
+        <h2>{title}</h2>
+        {titleSlot}
       </div>
-    ) : undefined;
-
-    return (
-      <div class="card">
-        <div class="card__title">
-          <h2>
-            {this.title}
-          </h2>
-          {this.$slots.title}
-        </div>
-        <div class="card__content">
-          {this.$slots.default}
-        </div>
-        {footer}
+      <div className="card__content">
+        {children}
       </div>
-    );
-  }
+      {footer}
+    </div>
+  );
 }

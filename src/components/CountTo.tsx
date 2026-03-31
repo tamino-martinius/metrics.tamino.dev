@@ -1,165 +1,125 @@
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { useEffect, useRef, useState } from 'react';
 
-const raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame;
-const caf = window.cancelAnimationFrame || window.webkitCancelAnimationFrame;
-const defaultEasing = (t: number, b: number, c: number, d: number) =>
-  c * (-Math.pow(2, -10 * t / d) + 1) * 1024 / 1023 + b;
+const raf = window.requestAnimationFrame;
+const caf = window.cancelAnimationFrame;
 
-@Component
-export default class extends Vue {
-  @Prop({ default: 0 }) startVal!: number;
-  @Prop({ default: 0 }) endVal!: number;
-  @Prop({ default: 3000 }) duration!: number;
-  @Prop({ default: true }) autoplay!: boolean;
-  @Prop({ default: 0, validator: (value: number) => value >= 0 }) decimals!: number;
-  @Prop({ default: '.' }) decimal!: string;
-  @Prop({ default: ',' }) separator!: string;
-  @Prop({ default: '' }) prefix!: string;
-  @Prop({ default: '' }) suffix!: string;
-  @Prop({ default: true }) useEasing!: boolean;
-  @Prop({ default: defaultEasing }) easingFn!:
-    (t: number, b: number, c: number, d: number) => number;
+interface CountToProps {
+  startVal?: number;
+  endVal?: number;
+  duration?: number;
+  autoplay?: boolean;
+  decimals?: number;
+  decimal?: string;
+  separator?: string;
+  prefix?: string;
+  suffix?: string;
+  useEasing?: boolean;
+}
 
-  localStartVal = this.startVal;
-  displayValue = this.formatNumber(this.startVal);
-  printVal?: number;
-  paused = false;
-  localDuration = this.duration;
-  startTime?: number;
-  timestamp?: number;
-  remaining?: number;
-  rAF?: number;
+function easing(t: number, b: number, c: number, d: number) {
+  return c * (-Math.pow(2, -10 * t / d) + 1) * 1024 / 1023 + b;
+}
 
-  get countDown() {
-    return this.startVal > this.endVal;
-  }
-
-  easing(t: number, b: number, c: number, d: number) {
-    return c * (-Math.pow(2, -10 * t / d) + 1) * 1024 / 1023 + b;
-  }
-
-  start() {
-    this.localStartVal = this.startVal;
-    this.startTime = undefined;
-    this.localDuration = this.duration;
-    this.paused = false;
-    this.rAF = raf(this.count);
-  }
-
-  pauseResume() {
-    if (this.paused) {
-      this.resume();
-      this.paused = false;
-    } else {
-      this.pause();
-      this.paused = true;
+function formatNumber(
+  value: number,
+  decimals: number,
+  decimal: string,
+  separator: string,
+  prefix: string,
+  suffix: string,
+) {
+  let num = value.toFixed(decimals);
+  num += '';
+  const x = num.split('.');
+  let x1 = x[0];
+  const x2 = x.length > 1 ? decimal + x[1] : '';
+  const rgx = /(\d+)(\d{3})/;
+  if (separator && isNaN(Number(separator))) {
+    while (rgx.test(x1)) {
+      x1 = x1.replace(rgx, '$1' + separator + '$2');
     }
   }
+  return prefix + x1 + x2 + suffix;
+}
 
-  pause() {
-    if (this.rAF) caf(this.rAF);
-  }
+export default function CountTo({
+  startVal = 0,
+  endVal = 0,
+  duration = 3000,
+  autoplay = true,
+  decimals = 0,
+  decimal = '.',
+  separator = ',',
+  prefix = '',
+  suffix = '',
+  useEasing: useEasingProp = true,
+}: CountToProps) {
+  const [displayValue, setDisplayValue] = useState(
+    formatNumber(startVal, decimals, decimal, separator, prefix, suffix),
+  );
 
-  resume() {
-    this.startTime = undefined;
-    if (this.remaining) this.localDuration = +this.remaining;
-    if (this.printVal) this.localStartVal = +this.printVal;
-    raf(this.count);
-  }
+  const rAFRef = useRef<number>();
+  const startTimeRef = useRef<number>();
+  const localStartValRef = useRef(startVal);
+  const localDurationRef = useRef(duration);
 
-  reset() {
-    this.startTime = undefined;
-    if (this.rAF) caf(this.rAF);
-    this.displayValue = this.formatNumber(this.startVal);
-  }
+  const countDown = startVal > endVal;
 
-  count(timestamp: number) {
-    if (!this.startTime) this.startTime = timestamp;
-    this.timestamp = timestamp;
-    const progress = timestamp - this.startTime;
-    this.remaining = this.localDuration - progress;
+  useEffect(() => {
+    function count(timestamp: number) {
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
+      const progress = timestamp - startTimeRef.current;
 
-    if (this.useEasing) {
-      if (this.countDown) {
-        this.printVal = this.localStartVal - this.easing(
-          progress, 0, this.localStartVal - this.endVal, this.localDuration,
-        );
+      let printVal: number;
+      if (useEasingProp) {
+        if (countDown) {
+          printVal = localStartValRef.current - easing(
+            progress, 0, localStartValRef.current - endVal, localDurationRef.current,
+          );
+        } else {
+          printVal = easing(
+            progress, localStartValRef.current, endVal - localStartValRef.current, localDurationRef.current,
+          );
+        }
       } else {
-        this.printVal = this.easing(
-          progress, this.localStartVal, this.endVal - this.localStartVal, this.localDuration,
-        );
+        if (countDown) {
+          printVal = localStartValRef.current - (
+            (localStartValRef.current - endVal) * (progress / localDurationRef.current)
+          );
+        } else {
+          printVal = localStartValRef.current +
+            (endVal - localStartValRef.current) * (progress / localDurationRef.current);
+        }
       }
-    } else {
-      if (this.countDown) {
-        this.printVal = this.localStartVal - (
-          (this.localStartVal - this.endVal) * (progress / this.localDuration)
-        );
+
+      if (countDown) {
+        printVal = printVal < endVal ? endVal : printVal;
       } else {
-        this.printVal = this.localStartVal +
-          (this.endVal - this.localStartVal) * (progress / this.localDuration);
+        printVal = printVal > endVal ? endVal : printVal;
+      }
+
+      setDisplayValue(formatNumber(printVal, decimals, decimal, separator, prefix, suffix));
+
+      if (progress < localDurationRef.current) {
+        rAFRef.current = raf(count);
       }
     }
-    if (this.countDown) {
-      this.printVal = (this.printVal || 0) < this.endVal ? this.endVal : this.printVal;
-    } else {
-      this.printVal = (this.printVal || 0) > this.endVal ? this.endVal : this.printVal;
+
+    if (autoplay) {
+      localStartValRef.current = startVal;
+      startTimeRef.current = undefined;
+      localDurationRef.current = duration;
+      rAFRef.current = raf(count);
     }
 
-    this.displayValue = this.formatNumber(this.printVal || 0);
-    if (progress < this.localDuration) {
-      this.rAF = raf(this.count);
-    } else {
-      this.$emit('callback');
-    }
-  }
+    return () => {
+      if (rAFRef.current) caf(rAFRef.current);
+    };
+  }, [startVal, endVal, duration, autoplay, decimals, decimal, separator, prefix, suffix, useEasingProp, countDown]);
 
-  isNumber(val: any) {
-    return !isNaN(parseFloat(val));
-  }
-
-  destroyed() {
-    if (this.rAF) caf(this.rAF);
-  }
-
-  formatNumber(value: number) {
-    let num = value.toFixed(this.decimals);
-    num += '';
-    const x = num.split('.');
-    let x1 = x[0];
-    const x2 = x.length > 1 ? this.decimal + x[1] : '';
-    const rgx = /(\d+)(\d{3})/;
-    if (this.separator && !this.isNumber(this.separator)) {
-      while (rgx.test(x1)) {
-        x1 = x1.replace(rgx, '$1' + this.separator + '$2');
-      }
-    }
-    return this.prefix + x1 + x2 + this.suffix;
-  }
-
-  mounted() {
-    if (this.autoplay) {
-      this.start();
-    }
-  }
-
-  watch = {
-    startVal: () => {
-      if (this.autoplay) {
-        this.start();
-      }
-    },
-    endVal: () => {
-      if (this.autoplay) {
-        this.start();
-      }
-    },
-  };
-
-  render() {
-    return (
-      <div class="count-to">
-        {this.displayValue}
-      </div>
-    );
-  }
+  return (
+    <div className="count-to">
+      {displayValue}
+    </div>
+  );
 }

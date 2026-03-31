@@ -2,26 +2,19 @@
   "name": "contributions-taminomartinius-de",
   "private": true,
   "description": "Display all GitHub Contributions of tamino-martinius",
-  "main": "dist/index.js",
+  "type": "module",
   "scripts": {
-    "build": "webpack",
-    "build:production": "npm run build --production",
-    "start": "webpack-dev-server --hot --inline --open -d",
-    "watch": "npm run build -- --watch",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
     "deploy": "scripts/deploy.sh"
   },
   "keywords": [
-    "example",
-    "sample",
-    "template",
-    "ts",
-    "tslint",
-    "tsx",
-    "typescript",
-    "vue",
-    "vuejs",
-    "webpack",
-    "webpack4"
+    "github",
+    "contributions",
+    "react",
+    "vite",
+    "typescript"
   ],
   "author": {
     "name": "Tamino Martinius",
@@ -30,34 +23,16 @@
   "license": "MIT",
   "dependencies": {
     "d3": "^5.5.0",
-    "vue": "^2.5.16",
-    "vue-class-component": "^6.2.0",
-    "vue-property-decorator": "^7.0.0",
-    "vue-router": "^3.0.1"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/d3": "^5.0.0",
-    "babel-core": "^6.26.3",
-    "babel-helper-vue-jsx-merge-props": "^2.0.3",
-    "babel-loader": "^7.1.5",
-    "babel-plugin-syntax-jsx": "^6.18.0",
-    "babel-plugin-transform-vue-jsx": "^3.7.0",
-    "babel-preset-env": "^1.7.0",
-    "clean-webpack-plugin": "^0.1.19",
-    "copy-webpack-plugin": "^4.5.2",
-    "css-loader": "^1.0.0",
-    "file-loader": "^1.1.11",
-    "html-webpack-plugin": "^3.2.0",
-    "node-sass": "^4.9.2",
-    "sass-loader": "^7.0.3",
-    "ts-loader": "^4.4.2",
-    "tslint": "^5.11.0",
-    "tslint-config-airbnb": "^5.9.2",
-    "typescript": "^2.9.2",
-    "vue-loader": "^15.2.6",
-    "vue-template-compiler": "^2.5.16",
-    "webpack": "^4.16.1",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.4"
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "sass": "^1.86.3",
+    "typescript": "^5.7.3",
+    "vite": "^6.2.5"
   }
 }
