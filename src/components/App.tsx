@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, JSX } from 'react';
 import Data from '@/models/Data';
 import Footer from '@/components/Footer';
 import Loading from '@/components/Loading';

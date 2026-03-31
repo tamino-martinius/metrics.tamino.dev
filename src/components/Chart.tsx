@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, JSX } from 'react';
 import { Graph } from '@/types';
 import Card from '@/components/Card';
 import ButtonGroup from '@/components/ButtonGroup';

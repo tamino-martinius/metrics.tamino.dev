@@ -58,8 +58,8 @@ export default function CountTo({
     formatNumber(startVal, decimals, decimal, separator, prefix, suffix),
   );
 
-  const rAFRef = useRef<number>();
-  const startTimeRef = useRef<number>();
+  const rAFRef = useRef<number | undefined>(undefined);
+  const startTimeRef = useRef<number | undefined>(undefined);
   const localStartValRef = useRef(startVal);
   const localDurationRef = useRef(duration);
 
