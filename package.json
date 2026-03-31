@@ -30,9 +30,9 @@
     "@types/d3": "^7.4.3",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^4.3.4",
-    "sass": "^1.86.3",
-    "typescript": "^5.9.3",
-    "vite": "^6.4.1"
+    "@vitejs/plugin-react": "^6.0.1",
+    "sass": "^1.98.0",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.3"
   }
 }
