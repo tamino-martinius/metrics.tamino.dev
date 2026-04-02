@@ -1,5 +1,5 @@
 import { useState, JSX } from 'react';
-import { Graph } from '@/types';
+import { Graph } from '@/types/ComponentStats';
 import Card from '@/components/Card';
 import ButtonGroup from '@/components/ButtonGroup';
 import Legend from '@/components/Legend';

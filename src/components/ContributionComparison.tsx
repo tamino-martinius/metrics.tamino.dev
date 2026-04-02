@@ -1,6 +1,6 @@
 import Card from '@/components/Card';
 import Legend from '@/components/Legend';
-import { CommitSplit, DataPoint, Counts } from '@/types';
+import { CommitSplit, DataPoint, Counts } from '@/types/ComponentStats';
 
 const ANGLE_START = 0;
 const ANGLE_END = 360;

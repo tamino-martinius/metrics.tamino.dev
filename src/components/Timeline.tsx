@@ -1,5 +1,5 @@
 import Chart, { ChartType } from '@/components/Chart';
-import { Dict, Graph, Counts, CommitSplit } from '@/types';
+import { Dict, Graph, Counts, CommitSplit } from '@/types/ComponentStats';
 
 const GROUP_SIZE = 24;
 
@@ -58,8 +58,8 @@ export default function Timeline({ dates }: TimelineProps) {
   const xLabels: string[] = [];
   const labelDate = new Date(firstDate);
   while (labelDate < lastDate) {
-    xLabels.push(`${labelDate.getFullYear()}-${labelDate.getMonth() + 1}`);
-    labelDate.setMonth(labelDate.getMonth() + 6);
+    xLabels.push(labelDate.getFullYear().toString());
+    labelDate.setFullYear(labelDate.getFullYear() + 1);
   }
 
   return (

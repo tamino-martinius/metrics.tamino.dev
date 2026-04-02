@@ -13,7 +13,7 @@ import WeekdayComparison from '@/components/WeekdayComparison';
 import YearlyStatistics from '@/components/YearlyStatistics';
 import Years from '@/components/Years';
 import Row, { RowType } from '@/components/Row';
-import { StatsData } from '@/types';
+import { StatsData } from '@/types/ComponentStats';
 import '@/style/index.scss';
 
 const data = new Data();
@@ -54,7 +54,7 @@ export default function App({ style }: AppProps) {
       <div className="app__content">
         <Header />
         <Row type={RowType.FIRST_THIRD}
-          first={<AboutMe languages={stats.languages} counts={stats.total.sum} />}
+          first={<AboutMe languages={stats.languages} />}
           last={<Statistics counts={stats.total.sum} />}
         />
         <Row>

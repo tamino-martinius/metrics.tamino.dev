@@ -1,19 +1,29 @@
-import { StatsData } from '@/types';
+import { AccountStats, StatsData } from '@/types/ComponentStats';
+import { toStatsData } from '@/models/Transform';
 import Util from '@/models/Util';
 
-const GITHUB_USER_LOGIN = 'tamino-martinius';
+const ACCOUNT_URLS = [
+  'https://raw.githubusercontent.com/tamino-martinius/github-stats/tamino-martinius/data/stats.json',
+  'https://raw.githubusercontent.com/tamino-cookieai/github-stats/tamino-cookieai/data/stats.json',
+];
+
 const MIN_WAIT_DURATION = 3000;
 
 export class Data {
   async getStats(): Promise<StatsData> {
     const startTime = Date.now();
-    const response = await fetch(`/${import.meta.env.DEV ? 'dev' : GITHUB_USER_LOGIN}.json`);
-    const data: StatsData = await response.json();
+    const responses = await Promise.all(
+      ACCOUNT_URLS.map(url => fetch(url)),
+    );
+    const accounts: AccountStats[] = await Promise.all(
+      responses.map(r => r.json()),
+    );
+    const stats = toStatsData(accounts);
     const duration = Date.now() - startTime;
     if (duration < MIN_WAIT_DURATION) {
       await Util.waitFor(MIN_WAIT_DURATION - duration);
     }
-    return data;
+    return stats;
   }
 }
 

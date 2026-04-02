@@ -18,6 +18,7 @@ export interface CommitSplit<T> {
 export interface StatsData {
   total: CommitSplit<Counts>;
   languages: Dict<Counts>;
+  languageColors: Dict<string>;
   weekDays: CommitSplit<Dict<WeekDayStats>>;
   dates: CommitSplit<Dict<Counts>>;
   repositories: Dict<RepositoryStats>;

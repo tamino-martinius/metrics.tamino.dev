@@ -1,5 +1,5 @@
 import Chart from '@/components/Chart';
-import { Dict, Graph, Counts } from '@/types';
+import { Dict, Graph, Counts } from '@/types/ComponentStats';
 
 const GROUP_SIZE = 8;
 

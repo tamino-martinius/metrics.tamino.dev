@@ -2,7 +2,7 @@ import Bar from '@/components/Bar';
 import Card from '@/components/Card';
 import CountTo from '@/components/CountTo';
 import Legend from '@/components/Legend';
-import { Counts, DataPoint } from '@/types';
+import { Counts, DataPoint } from '@/types/ComponentStats';
 
 interface StatisticsProps {
   counts: Counts;

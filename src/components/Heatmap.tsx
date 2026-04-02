@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Dict } from '@/types';
+import { Dict } from '@/types/ComponentStats';
 
 interface HeatmapProps {
   year: string;

@@ -1,5 +1,5 @@
-import { DataPoint } from '@/types';
-export type { DataPoint } from '@/types';
+import { DataPoint } from '@/types/ComponentStats';
+export type { DataPoint } from '@/types/ComponentStats';
 
 export enum BarType {
   HORIZONTAL = 'bar--horizontal',

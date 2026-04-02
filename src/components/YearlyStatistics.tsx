@@ -4,7 +4,7 @@ import ButtonGroup from '@/components/ButtonGroup';
 import Card from '@/components/Card';
 import Legend from '@/components/Legend';
 import Heatmap from '@/components/Heatmap';
-import { Counts, Dict, DataPoint } from '@/types';
+import { Counts, Dict, DataPoint } from '@/types/ComponentStats';
 
 interface YearlyStatisticsProps {
   dates: Dict<Counts>;

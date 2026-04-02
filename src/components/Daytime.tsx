@@ -1,5 +1,5 @@
 import Chart from '@/components/Chart';
-import { Dict, Graph, WeekDayStats } from '@/types';
+import { Dict, Graph, WeekDayStats } from '@/types/ComponentStats';
 
 interface DaytimeProps {
   weekDays: Dict<WeekDayStats>;

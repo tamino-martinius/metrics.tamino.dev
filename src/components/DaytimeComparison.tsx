@@ -1,5 +1,5 @@
 import Chart, { ChartType } from '@/components/Chart';
-import { Dict, Graph, WeekDayStats, CommitSplit } from '@/types';
+import { Dict, Graph, WeekDayStats, CommitSplit } from '@/types/ComponentStats';
 
 interface DaytimeComparisonProps {
   weekDays: CommitSplit<Dict<WeekDayStats>>;

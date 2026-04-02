@@ -1,7 +1,7 @@
 import Bar, { BarType } from '@/components/Bar';
 import Card from '@/components/Card';
 import Legend from '@/components/Legend';
-import { CommitSplit, DataPoint, Dict, WeekDayStats } from '@/types';
+import { CommitSplit, DataPoint, Dict, WeekDayStats } from '@/types/ComponentStats';
 
 interface WeekdayComparisonProps {
   weekdays: CommitSplit<Dict<WeekDayStats>>;
