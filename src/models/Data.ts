@@ -1,6 +1,7 @@
-import { AccountStats, StatsData } from '@/types/ComponentStats';
+import { StatsData } from '@/types/ComponentStats';
 import { toStatsData } from '@/models/Transform';
 import Util from '@/models/Util';
+import { AccountStats } from '@/types/GitHubStats';
 
 const ACCOUNT_URLS = [
   'https://raw.githubusercontent.com/tamino-martinius/github-stats/tamino-martinius/data/stats.json',
