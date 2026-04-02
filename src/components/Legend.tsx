@@ -1,5 +1,7 @@
-import { DataPoint } from '@/types/ComponentStats';
+import type { DataPoint } from '@/types/ComponentStats';
+
 export type { DataPoint } from '@/types/ComponentStats';
+
 import CountTo from '@/components/CountTo';
 
 interface LegendProps {
@@ -9,15 +11,21 @@ interface LegendProps {
   className?: string;
 }
 
-export default function Legend({ sections, columns, decimals, className }: LegendProps) {
+export default function Legend({
+  sections,
+  columns,
+  decimals,
+  className,
+}: LegendProps) {
   const gridTemplateColumns = columns || sections.map(() => '1fr').join(' ');
 
   const legends = sections.map((data, i) => (
     <div key={i}>
-      <div className="legend__color" style={{ '--color': `var(--${data.color})` } as React.CSSProperties} />
-      <div className="legend__title">
-        {data.title}
-      </div>
+      <div
+        className="legend__color"
+        style={{ '--color': `var(--${data.color})` } as React.CSSProperties}
+      />
+      <div className="legend__title">{data.title}</div>
       <div className="legend__value">
         <CountTo
           decimals={decimals}
@@ -30,7 +38,10 @@ export default function Legend({ sections, columns, decimals, className }: Legen
   ));
 
   return (
-    <div className={['legend', className].filter(Boolean).join(' ')} style={{ gridTemplateColumns }}>
+    <div
+      className={['legend', className].filter(Boolean).join(' ')}
+      style={{ gridTemplateColumns }}
+    >
       {legends}
     </div>
   );

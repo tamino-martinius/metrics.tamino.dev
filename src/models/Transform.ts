@@ -1,14 +1,20 @@
-import {
+import type {
   Counts,
   Dict,
   RepositoryStats,
   StatsData,
   WeekDayStats,
 } from '@/types/ComponentStats';
-import { AccountStats, CommitStats } from '@/types/GitHubStats';
+import type { AccountStats, CommitStats } from '@/types/GitHubStats';
 
 const WEEKDAY_MAP: Record<string, number> = {
-  Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6,
+  Sun: 0,
+  Mon: 1,
+  Tue: 2,
+  Wed: 3,
+  Thu: 4,
+  Fri: 5,
+  Sat: 6,
 };
 
 function emptyCounts(): Counts {
@@ -89,13 +95,17 @@ export function toStatsData(accounts: AccountStats[]): StatsData {
 
     for (const repo of account.repositories) {
       const isOpen = !!repo.public;
-      const repoName = repo.public?.name || `${account.user.username}/Private#${++privateIndex}`;
+      const repoName =
+        repo.public?.name ||
+        `${account.user.username}/Private#${++privateIndex}`;
 
       // Per-repo stats
       const repoStats: RepositoryStats = { ...emptyCounts(), years: {} };
 
       // Process commitsPerDate
-      for (const [isoDate, stats] of Object.entries(repo.commitsPerDate ?? {})) {
+      for (const [isoDate, stats] of Object.entries(
+        repo.commitsPerDate ?? {},
+      )) {
         const dateKey = convertDateKey(isoDate);
         const year = extractYear(isoDate);
 
@@ -145,9 +155,14 @@ export function toStatsData(accounts: AccountStats[]): StatsData {
       }
 
       // Language aggregation (only for public repos with languages)
-      if (isOpen && repo.public?.languages && repo.public?.languages.length > 0) {
-        const langCount = repo.public?.languages.length;
-        for (const lang of repo.public?.languages) {
+      if (
+        isOpen &&
+        repo.public?.languages &&
+        repo.public?.languages.length > 0
+      ) {
+        const langs = repo.public.languages;
+        const langCount = langs.length;
+        for (const lang of langs) {
           if (!languages[lang]) languages[lang] = emptyCounts();
           languages[lang].commitCount += repoStats.commitCount / langCount;
           languages[lang].additions += repoStats.additions / langCount;

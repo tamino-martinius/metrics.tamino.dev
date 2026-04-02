@@ -1,7 +1,7 @@
-import { StatsData } from '@/types/ComponentStats';
 import { toStatsData } from '@/models/Transform';
 import Util from '@/models/Util';
-import { AccountStats } from '@/types/GitHubStats';
+import type { StatsData } from '@/types/ComponentStats';
+import type { AccountStats } from '@/types/GitHubStats';
 
 const ACCOUNT_URLS = [
   'https://raw.githubusercontent.com/tamino-martinius/github-stats/tamino-martinius/data/stats.json',
@@ -13,11 +13,9 @@ const MIN_WAIT_DURATION = 3000;
 export class Data {
   async getStats(): Promise<StatsData> {
     const startTime = Date.now();
-    const responses = await Promise.all(
-      ACCOUNT_URLS.map(url => fetch(url)),
-    );
+    const responses = await Promise.all(ACCOUNT_URLS.map((url) => fetch(url)));
     const accounts: AccountStats[] = await Promise.all(
-      responses.map(r => r.json()),
+      responses.map((r) => r.json()),
     );
     const stats = toStatsData(accounts);
     const duration = Date.now() - startTime;

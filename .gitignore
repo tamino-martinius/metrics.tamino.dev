@@ -4,3 +4,4 @@ dist
 *.local
 .next
 .playwright-mcp
+.vscode

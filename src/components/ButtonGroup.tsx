@@ -1,12 +1,16 @@
 import { useState } from 'react';
 
-interface ButtonGroupProps {
+interface ButtonGroupProps<T = string> {
   labels: string[];
-  values?: any[];
-  onValueChanged?: (value: any) => void;
+  values?: T[];
+  onValueChanged?: (value: T) => void;
 }
 
-export default function ButtonGroup({ labels, values, onValueChanged }: ButtonGroupProps) {
+export default function ButtonGroup({
+  labels,
+  values,
+  onValueChanged,
+}: ButtonGroupProps) {
   const [active, setActive] = useState(labels.length - 1);
 
   function handleClick(index: number) {
@@ -18,6 +22,7 @@ export default function ButtonGroup({ labels, values, onValueChanged }: ButtonGr
 
   const buttons = labels.map((label, i) => (
     <button
+      type="button"
       key={i}
       onClick={() => handleClick(i)}
       className={`button-group__button${i === active ? ' button-group__button--active' : ''}`}
@@ -26,9 +31,5 @@ export default function ButtonGroup({ labels, values, onValueChanged }: ButtonGr
     </button>
   ));
 
-  return (
-    <div className="button-group">
-      {buttons}
-    </div>
-  );
+  return <div className="button-group">{buttons}</div>;
 }

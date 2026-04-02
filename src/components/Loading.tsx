@@ -22,32 +22,63 @@ export default function Loading({ hidden }: LoadingProps) {
 
   return (
     <div className="loading" style={{ opacity: hidden ? 0 : opacity }}>
-      <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        width="200"
+        height="200"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-label="Loading animation"
+      >
         <circle className="loading__center" cx="100" cy="100" r="7" />
-        <rect className="loading__rect" x="65" y="65" width="70" height="70" rx="6" />
+        <rect
+          className="loading__rect"
+          x="65"
+          y="65"
+          width="70"
+          height="70"
+          rx="6"
+        />
         <path className="loading__line loading__line--1" d={line1} />
         <path className="loading__line loading__line--2" d={line2} />
-        <circle className="loading__dot loading__dot--1" cx="119" cy="100" r="7" />
-        <circle className="loading__dot loading__dot--2" cx="100" cy="81" r="7" />
-        <circle className="loading__dot loading__dot--3" cx="100" cy="119" r="7" />
+        <circle
+          className="loading__dot loading__dot--1"
+          cx="119"
+          cy="100"
+          r="7"
+        />
+        <circle
+          className="loading__dot loading__dot--2"
+          cx="100"
+          cy="81"
+          r="7"
+        />
+        <circle
+          className="loading__dot loading__dot--3"
+          cx="100"
+          cy="119"
+          r="7"
+        />
         <mask id="loading__mask">
           <rect
             className="loading__rect loading__rect--masked"
-            x="65" y="65" width="70" height="70" rx="6"
+            x="65"
+            y="65"
+            width="70"
+            height="70"
+            rx="6"
           />
         </mask>
         <path
           className="loading__line loading__line--masked loading__line--1"
-          mask="url(#loading__mask)" d={line1}
+          mask="url(#loading__mask)"
+          d={line1}
         />
         <path
           className="loading__line loading__line--masked loading__line--2"
-          mask="url(#loading__mask)" d={line2}
+          mask="url(#loading__mask)"
+          d={line2}
         />
       </svg>
-      <div className="loading__title">
-        Loading Git Stats
-      </div>
+      <div className="loading__title">Loading Git Stats</div>
     </div>
   );
 }

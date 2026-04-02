@@ -1,6 +1,6 @@
 import Card from '@/components/Card';
 import Legend from '@/components/Legend';
-import { CommitSplit, DataPoint, Counts } from '@/types/ComponentStats';
+import type { CommitSplit, Counts, DataPoint } from '@/types/ComponentStats';
 
 const ANGLE_START = 0;
 const ANGLE_END = 360;
@@ -13,26 +13,48 @@ interface ContributionComparisonProps {
   counts: CommitSplit<Counts>;
 }
 
-function polarToCartesian(centerX: number, centerY: number, radius: number, angleInDegrees: number) {
-  const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+function polarToCartesian(
+  centerX: number,
+  centerY: number,
+  radius: number,
+  angleInDegrees: number,
+) {
+  const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
   return {
-    x: centerX + (radius * Math.cos(angleInRadians)),
-    y: centerY + (radius * Math.sin(angleInRadians)),
+    x: centerX + radius * Math.cos(angleInRadians),
+    y: centerY + radius * Math.sin(angleInRadians),
   };
 }
 
-function describeArc(x: number, y: number, radius: number, startAngle: number, endAngle: number) {
+function describeArc(
+  x: number,
+  y: number,
+  radius: number,
+  startAngle: number,
+  endAngle: number,
+) {
   const start = polarToCartesian(x, y, radius, endAngle);
   const end = polarToCartesian(x, y, radius, startAngle);
   const arcSweep = endAngle - startAngle <= 180 ? '0' : '1';
   const d = [
-    'M', start.x, start.y,
-    'A', radius, radius, 0, arcSweep, 0, end.x, end.y,
+    'M',
+    start.x,
+    start.y,
+    'A',
+    radius,
+    radius,
+    0,
+    arcSweep,
+    0,
+    end.x,
+    end.y,
   ].join(' ');
   return d;
 }
 
-export default function ContributionComparison({ counts }: ContributionComparisonProps) {
+export default function ContributionComparison({
+  counts,
+}: ContributionComparisonProps) {
   const valueOpen = counts.open.commitCount / counts.sum.commitCount;
   const valueClosed = counts.closed.commitCount / counts.sum.commitCount;
   const angle = valueOpen * 360;
@@ -54,37 +76,50 @@ export default function ContributionComparison({ counts }: ContributionCompariso
         viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`}
         width={`${SVG_SIZE}px`}
         height={`${SVG_SIZE}px`}
+        aria-label="Contribution Comparison"
       >
         <path
           className={[classPath, classOpen].join(' ')}
           style={{ strokeWidth: `${STROKE_WIDTH}px` }}
           d={describeArc(
-            SVG_SIZE / 2, SVG_SIZE / 2, SVG_SIZE / 2 - STROKE_WIDTH / 2,
-            ANGLE_START + ANGLE_GAP, angle - ANGLE_GAP,
+            SVG_SIZE / 2,
+            SVG_SIZE / 2,
+            SVG_SIZE / 2 - STROKE_WIDTH / 2,
+            ANGLE_START + ANGLE_GAP,
+            angle - ANGLE_GAP,
           )}
         />
         <path
           className={[classPath, classOpen, classHover].join(' ')}
           style={{ strokeWidth: `${HOVER_WIDTH}px` }}
           d={describeArc(
-            SVG_SIZE / 2, SVG_SIZE / 2, SVG_SIZE / 2 - HOVER_WIDTH / 2,
-            ANGLE_START + ANGLE_GAP, angle - ANGLE_GAP,
+            SVG_SIZE / 2,
+            SVG_SIZE / 2,
+            SVG_SIZE / 2 - HOVER_WIDTH / 2,
+            ANGLE_START + ANGLE_GAP,
+            angle - ANGLE_GAP,
           )}
         />
         <path
           className={[classPath, classClosed].join(' ')}
           style={{ strokeWidth: `${STROKE_WIDTH}px` }}
           d={describeArc(
-            SVG_SIZE / 2, SVG_SIZE / 2, SVG_SIZE / 2 - STROKE_WIDTH / 2,
-            angle + ANGLE_GAP, ANGLE_END - ANGLE_GAP,
+            SVG_SIZE / 2,
+            SVG_SIZE / 2,
+            SVG_SIZE / 2 - STROKE_WIDTH / 2,
+            angle + ANGLE_GAP,
+            ANGLE_END - ANGLE_GAP,
           )}
         />
         <path
           className={[classPath, classClosed, classHover].join(' ')}
           style={{ strokeWidth: `${HOVER_WIDTH}px` }}
           d={describeArc(
-            SVG_SIZE / 2, SVG_SIZE / 2, SVG_SIZE / 2 - HOVER_WIDTH / 2,
-            angle + ANGLE_GAP, ANGLE_END - ANGLE_GAP,
+            SVG_SIZE / 2,
+            SVG_SIZE / 2,
+            SVG_SIZE / 2 - HOVER_WIDTH / 2,
+            angle + ANGLE_GAP,
+            ANGLE_END - ANGLE_GAP,
           )}
         />
       </svg>

@@ -1,5 +1,5 @@
 import Chart from '@/components/Chart';
-import { Dict, Graph, Counts } from '@/types/ComponentStats';
+import type { Counts, Dict, Graph } from '@/types/ComponentStats';
 
 const GROUP_SIZE = 8;
 
@@ -30,27 +30,29 @@ export default function Years({ dates }: YearsProps) {
       date.setDate(date.getDate() + 1);
     }
     graph.value = sum;
-    graph.values = graph.values.reduce<number[]>(
-      (arr, value, i) => {
-        arr[~~(i / GROUP_SIZE)] = (arr[~~(i / GROUP_SIZE)] || 0) + value;
-        return arr;
-      },
-      [],
-    );
+    graph.values = graph.values.reduce<number[]>((arr, value, i) => {
+      arr[~~(i / GROUP_SIZE)] = (arr[~~(i / GROUP_SIZE)] || 0) + value;
+      return arr;
+    }, []);
     return graph;
   });
 
   const xLabels = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
 
   return (
-    <Chart
-      className="years"
-      title="Years"
-      graphs={graphs}
-      xLabels={xLabels}
-    />
+    <Chart className="years" title="Years" graphs={graphs} xLabels={xLabels} />
   );
 }

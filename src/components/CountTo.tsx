@@ -17,7 +17,7 @@ interface CountToProps {
 }
 
 function easing(t: number, b: number, c: number, d: number) {
-  return c * (-Math.pow(2, -10 * t / d) + 1) * 1024 / 1023 + b;
+  return (c * (-(2 ** ((-10 * t) / d)) + 1) * 1024) / 1023 + b;
 }
 
 function formatNumber(
@@ -34,9 +34,9 @@ function formatNumber(
   let x1 = x[0];
   const x2 = x.length > 1 ? decimal + x[1] : '';
   const rgx = /(\d+)(\d{3})/;
-  if (separator && isNaN(Number(separator))) {
+  if (separator && Number.isNaN(Number(separator))) {
     while (rgx.test(x1)) {
-      x1 = x1.replace(rgx, '$1' + separator + '$2');
+      x1 = x1.replace(rgx, `$1${separator}$2`);
     }
   }
   return prefix + x1 + x2 + suffix;
@@ -73,22 +73,33 @@ export default function CountTo({
       let printVal: number;
       if (useEasingProp) {
         if (countDown) {
-          printVal = localStartValRef.current - easing(
-            progress, 0, localStartValRef.current - endVal, localDurationRef.current,
-          );
+          printVal =
+            localStartValRef.current -
+            easing(
+              progress,
+              0,
+              localStartValRef.current - endVal,
+              localDurationRef.current,
+            );
         } else {
           printVal = easing(
-            progress, localStartValRef.current, endVal - localStartValRef.current, localDurationRef.current,
+            progress,
+            localStartValRef.current,
+            endVal - localStartValRef.current,
+            localDurationRef.current,
           );
         }
       } else {
         if (countDown) {
-          printVal = localStartValRef.current - (
-            (localStartValRef.current - endVal) * (progress / localDurationRef.current)
-          );
+          printVal =
+            localStartValRef.current -
+            (localStartValRef.current - endVal) *
+              (progress / localDurationRef.current);
         } else {
-          printVal = localStartValRef.current +
-            (endVal - localStartValRef.current) * (progress / localDurationRef.current);
+          printVal =
+            localStartValRef.current +
+            (endVal - localStartValRef.current) *
+              (progress / localDurationRef.current);
         }
       }
 
@@ -98,7 +109,9 @@ export default function CountTo({
         printVal = printVal > endVal ? endVal : printVal;
       }
 
-      setDisplayValue(formatNumber(printVal, decimals, decimal, separator, prefix, suffix));
+      setDisplayValue(
+        formatNumber(printVal, decimals, decimal, separator, prefix, suffix),
+      );
 
       if (progress < localDurationRef.current) {
         rAFRef.current = raf(count);
@@ -115,11 +128,19 @@ export default function CountTo({
     return () => {
       if (rAFRef.current) caf(rAFRef.current);
     };
-  }, [startVal, endVal, duration, autoplay, decimals, decimal, separator, prefix, suffix, useEasingProp, countDown]);
+  }, [
+    startVal,
+    endVal,
+    duration,
+    autoplay,
+    decimals,
+    decimal,
+    separator,
+    prefix,
+    suffix,
+    useEasingProp,
+    countDown,
+  ]);
 
-  return (
-    <div className="count-to">
-      {displayValue}
-    </div>
-  );
+  return <div className="count-to">{displayValue}</div>;
 }

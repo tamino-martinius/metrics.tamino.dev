@@ -1,5 +1,5 @@
-import { createRoot } from 'react-dom/client';
 import { useEffect, useState } from 'react';
+import { createRoot } from 'react-dom/client';
 import App from '@/components/App';
 
 function Main() {
@@ -15,16 +15,19 @@ function Main() {
     }
 
     window.addEventListener('deviceorientation', handleOrientation);
-    return () => window.removeEventListener('deviceorientation', handleOrientation);
+    return () =>
+      window.removeEventListener('deviceorientation', handleOrientation);
   }, []);
 
   return (
     <App
-      style={{
-        '--alpha': alpha,
-        '--beta': beta,
-        '--gamma': gamma,
-      } as React.CSSProperties}
+      style={
+        {
+          '--alpha': alpha,
+          '--beta': beta,
+          '--gamma': gamma,
+        } as React.CSSProperties
+      }
     />
   );
 }

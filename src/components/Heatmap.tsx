@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Dict } from '@/types/ComponentStats';
+import type { Dict } from '@/types/ComponentStats';
 
 interface HeatmapProps {
   year: string;
@@ -27,11 +27,13 @@ export default function Heatmap({ year, counts, max }: HeatmapProps) {
     <div
       key={i}
       className="heatmap__cell"
-      style={{
-        '--color': `var(--${
-          count === undefined ? 'color-empty' : colors[count.toString()]
-        })`,
-      } as React.CSSProperties}
+      style={
+        {
+          '--color': `var(--${
+            count === undefined ? 'color-empty' : colors[count.toString()]
+          })`,
+        } as React.CSSProperties
+      }
     />
   ));
 
@@ -47,7 +49,11 @@ export default function Heatmap({ year, counts, max }: HeatmapProps) {
   }
 
   const legendCells = legendColors.map((color, i) => (
-    <div key={i} className="heatmap__cell" style={{ '--color': `var(--${color})` } as React.CSSProperties} />
+    <div
+      key={i}
+      className="heatmap__cell"
+      style={{ '--color': `var(--${color})` } as React.CSSProperties}
+    />
   ));
 
   return (

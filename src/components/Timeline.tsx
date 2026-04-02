@@ -1,5 +1,5 @@
 import Chart, { ChartType } from '@/components/Chart';
-import { Dict, Graph, Counts, CommitSplit } from '@/types/ComponentStats';
+import type { CommitSplit, Counts, Dict, Graph } from '@/types/ComponentStats';
 
 const GROUP_SIZE = 24;
 
@@ -23,20 +23,14 @@ export default function Timeline({ dates }: TimelineProps) {
     date.setDate(date.getDate() + 1);
   }
 
-  openValues = openValues.reduce<number[]>(
-    (arr, value, i) => {
-      arr[~~(i / GROUP_SIZE)] = (arr[~~(i / GROUP_SIZE)] || 0) + value;
-      return arr;
-    },
-    [],
-  );
-  closedValues = closedValues.reduce<number[]>(
-    (arr, value, i) => {
-      arr[~~(i / GROUP_SIZE)] = (arr[~~(i / GROUP_SIZE)] || 0) + value;
-      return arr;
-    },
-    [],
-  );
+  openValues = openValues.reduce<number[]>((arr, value, i) => {
+    arr[~~(i / GROUP_SIZE)] = (arr[~~(i / GROUP_SIZE)] || 0) + value;
+    return arr;
+  }, []);
+  closedValues = closedValues.reduce<number[]>((arr, value, i) => {
+    arr[~~(i / GROUP_SIZE)] = (arr[~~(i / GROUP_SIZE)] || 0) + value;
+    return arr;
+  }, []);
 
   const openValue = openValues.reduce((sum, value) => sum + value, 0);
   const closedValue = closedValues.reduce((sum, value) => sum + value, 0);

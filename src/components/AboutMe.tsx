@@ -1,6 +1,6 @@
 import Card from '@/components/Card';
 import Legend from '@/components/Legend';
-import { Dict, Counts, DataPoint } from '@/types/ComponentStats';
+import type { Counts, DataPoint, Dict } from '@/types/ComponentStats';
 
 interface AboutMeProps {
   languages: Dict<Counts>;
@@ -13,7 +13,10 @@ export default function AboutMe({ languages }: AboutMeProps) {
     .slice(0, 4);
 
   // Use public commit total (sum of all language commit counts) as denominator
-  const totalLangCommits = Object.values(languages).reduce((sum, l) => sum + l.commitCount, 0);
+  const totalLangCommits = Object.values(languages).reduce(
+    (sum, l) => sum + l.commitCount,
+    0,
+  );
 
   const sections: DataPoint[] = topLanguages.map(([lang, langCounts], i) => ({
     color: `color-${i + 1}`,
@@ -28,6 +31,7 @@ export default function AboutMe({ languages }: AboutMeProps) {
       titleSlot={
         <img
           src="https://avatars3.githubusercontent.com/u/3111766?s=50&v=4"
+          alt="Tamino Martinius"
           className="about-me__avatar"
         />
       }
@@ -40,7 +44,12 @@ export default function AboutMe({ languages }: AboutMeProps) {
         </a>
       </h4>
       <hr />
-      <Legend decimals={2} className="about-me__legend" sections={sections} columns="1fr 1fr" />
+      <Legend
+        decimals={2}
+        className="about-me__legend"
+        sections={sections}
+        columns="1fr 1fr"
+      />
     </Card>
   );
 }

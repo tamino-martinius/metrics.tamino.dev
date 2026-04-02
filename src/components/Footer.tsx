@@ -13,9 +13,7 @@ export default function Footer() {
           </a>
         </div>
         <div className="footer__right">
-          <a href="https://taminomartinius.de/#legal">
-            Legal
-          </a>
+          <a href="https://taminomartinius.de/#legal">Legal</a>
         </div>
       </div>
     </footer>

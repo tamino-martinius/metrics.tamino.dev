@@ -2,16 +2,19 @@ import { useState } from 'react';
 import Bar from '@/components/Bar';
 import ButtonGroup from '@/components/ButtonGroup';
 import Card from '@/components/Card';
-import Legend from '@/components/Legend';
 import Heatmap from '@/components/Heatmap';
-import { Counts, Dict, DataPoint } from '@/types/ComponentStats';
+import Legend from '@/components/Legend';
+import type { Counts, DataPoint, Dict } from '@/types/ComponentStats';
 
 interface YearlyStatisticsProps {
   dates: Dict<Counts>;
   repos: Dict<{ commitCount: number; years: Dict<Counts> }>;
 }
 
-export default function YearlyStatistics({ dates, repos }: YearlyStatisticsProps) {
+export default function YearlyStatistics({
+  dates,
+  repos,
+}: YearlyStatisticsProps) {
   const [year, setYear] = useState(new Date().getFullYear().toString());
 
   const reposOfYear: Dict<Counts> = {};
@@ -23,7 +26,10 @@ export default function YearlyStatistics({ dates, repos }: YearlyStatisticsProps
   function getSections(totalCommits: number) {
     let othersSum = totalCommits;
     const repoKeys = Object.keys(reposOfYear);
-    repoKeys.sort((key1, key2) => reposOfYear[key2].commitCount - reposOfYear[key1].commitCount);
+    repoKeys.sort(
+      (key1, key2) =>
+        reposOfYear[key2].commitCount - reposOfYear[key1].commitCount,
+    );
     const sections: DataPoint[] = [];
     for (let i = 0; i < repoKeys.length && i < 6; i += 1) {
       const section = {
@@ -64,10 +70,13 @@ export default function YearlyStatistics({ dates, repos }: YearlyStatisticsProps
   }
   const counts: (number | undefined)[] = [];
   let totalCommits = 0;
-  const max = Object.values(dates).reduce((max, d) => Math.max(max, d.commitCount), 0);
+  const max = Object.values(dates).reduce(
+    (max, d) => Math.max(max, d.commitCount),
+    0,
+  );
   for (const key of keys) {
     if (key) {
-      const count = (dates[key] && dates[key].commitCount) || 0;
+      const count = dates[key]?.commitCount || 0;
       counts.push(count);
       totalCommits += count;
     } else {

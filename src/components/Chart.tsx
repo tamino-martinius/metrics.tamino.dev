@@ -1,9 +1,9 @@
-import { useState, JSX } from 'react';
-import { Graph } from '@/types/ComponentStats';
-import Card from '@/components/Card';
+import { area, curveBasis, line, scaleLinear } from 'd3';
+import { type JSX, useState } from 'react';
 import ButtonGroup from '@/components/ButtonGroup';
+import Card from '@/components/Card';
 import Legend from '@/components/Legend';
-import { scaleLinear, area, line, curveBasis } from 'd3';
+import type { Graph } from '@/types/ComponentStats';
 
 export enum ChartType {
   LINES = 'chart--lines',
@@ -22,18 +22,24 @@ interface ChartProps {
   className?: string;
 }
 
-export default function Chart({ graphs: graphsProp, title, xLabels, type, className }: ChartProps) {
+export default function Chart({
+  graphs: graphsProp,
+  title,
+  xLabels,
+  type,
+  className,
+}: ChartProps) {
   const [currentType, setCurrentType] = useState(type || ChartType.STACKED);
 
   const classes = [className, currentType].filter(Boolean).join(' ');
-  const graphs: Graph[] = graphsProp.map(graph => ({
+  const graphs: Graph[] = graphsProp.map((graph) => ({
     title: graph.title,
     color: graph.color,
     value: graph.value,
     values: graph.values.slice(0),
   }));
 
-  const xMax = Math.max(...graphs.map(graph => graph.values.length));
+  const xMax = Math.max(...graphs.map((graph) => graph.values.length));
   let y0 = Array.from({ length: xMax }).map(() => 0);
   if (currentType === ChartType.STACKED) {
     for (let i = 1; i < graphs.length; i += 1) {
@@ -42,14 +48,20 @@ export default function Chart({ graphs: graphsProp, title, xLabels, type, classN
       );
     }
   }
-  const yMax = Math.max(...graphs.map(graph =>
-    Math.max(...graph.values),
-  ));
+  const yMax = Math.max(...graphs.map((graph) => Math.max(...graph.values)));
 
-  const xScale = scaleLinear().domain([0, xMax - 1]).range([0, CHART_WIDTH]);
-  const yScaleComplete = scaleLinear().domain([0, yMax]).range([CHART_HEIGHT, 0]);
-  const yScaleTop = scaleLinear().domain([0, yMax]).range([CHART_HEIGHT / 2, 0]);
-  const yScaleBottom = scaleLinear().domain([0, yMax]).range([CHART_HEIGHT / 2, CHART_HEIGHT]);
+  const xScale = scaleLinear()
+    .domain([0, xMax - 1])
+    .range([0, CHART_WIDTH]);
+  const yScaleComplete = scaleLinear()
+    .domain([0, yMax])
+    .range([CHART_HEIGHT, 0]);
+  const yScaleTop = scaleLinear()
+    .domain([0, yMax])
+    .range([CHART_HEIGHT / 2, 0]);
+  const yScaleBottom = scaleLinear()
+    .domain([0, yMax])
+    .range([CHART_HEIGHT / 2, CHART_HEIGHT]);
 
   const createPath = (values: number[], index: number) => {
     let yScale = yScaleComplete;
@@ -116,26 +128,28 @@ export default function Chart({ graphs: graphsProp, title, xLabels, type, classN
     );
   }
 
-  const xAxisLabels = xLabels.map((label, i) => (
-    <label key={i}>{label}</label>
-  ));
+  const xAxisLabels = xLabels.map((label, i) => <span key={i}>{label}</span>);
 
   return (
-    <Card className={classes} title={title} titleSlot={typeToggle} footerSlot={<Legend sections={graphsProp} />}>
+    <Card
+      className={classes}
+      title={title}
+      titleSlot={typeToggle}
+      footerSlot={<Legend sections={graphsProp} />}
+    >
       <div className="chart__grid">
         <div className="chart__canvas chart--faded">
           <svg
             viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
             width={`${CHART_WIDTH}px`}
             height={`${CHART_HEIGHT}px`}
+            aria-label={title}
           >
             {graphElements}
             {divider}
           </svg>
         </div>
-        <div className="chart__axis chart__axis--x">
-          {xAxisLabels}
-        </div>
+        <div className="chart__axis chart__axis--x">{xAxisLabels}</div>
       </div>
     </Card>
   );

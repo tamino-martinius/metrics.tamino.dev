@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface CardProps {
   title: string;
@@ -8,11 +8,15 @@ interface CardProps {
   footerSlot?: ReactNode;
 }
 
-export default function Card({ title, className, children, titleSlot, footerSlot }: CardProps) {
+export default function Card({
+  title,
+  className,
+  children,
+  titleSlot,
+  footerSlot,
+}: CardProps) {
   const footer = footerSlot ? (
-    <div className="card__footer">
-      {footerSlot}
-    </div>
+    <div className="card__footer">{footerSlot}</div>
   ) : undefined;
 
   return (
@@ -21,9 +25,7 @@ export default function Card({ title, className, children, titleSlot, footerSlot
         <h2>{title}</h2>
         {titleSlot}
       </div>
-      <div className="card__content">
-        {children}
-      </div>
+      <div className="card__content">{children}</div>
       {footer}
     </div>
   );

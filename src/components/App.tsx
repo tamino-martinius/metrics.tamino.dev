@@ -1,19 +1,19 @@
-import { useEffect, useState, JSX } from 'react';
-import Data from '@/models/Data';
-import Footer from '@/components/Footer';
-import Loading from '@/components/Loading';
-import Header from '@/components/Header';
+import { type JSX, useEffect, useState } from 'react';
+import AboutMe from '@/components/AboutMe';
+import ContributionComparison from '@/components/ContributionComparison';
 import Daytime from '@/components/Daytime';
 import DaytimeComparison from '@/components/DaytimeComparison';
-import AboutMe from '@/components/AboutMe';
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
+import Loading from '@/components/Loading';
+import Row, { RowType } from '@/components/Row';
 import Statistics from '@/components/Statistics';
-import ContributionComparison from '@/components/ContributionComparison';
 import Timeline from '@/components/Timeline';
 import WeekdayComparison from '@/components/WeekdayComparison';
 import YearlyStatistics from '@/components/YearlyStatistics';
 import Years from '@/components/Years';
-import Row, { RowType } from '@/components/Row';
-import { StatsData } from '@/types/ComponentStats';
+import Data from '@/models/Data';
+import type { StatsData } from '@/types/ComponentStats';
 import '@/style/index.scss';
 
 const data = new Data();
@@ -27,7 +27,7 @@ export default function App({ style }: AppProps) {
   const [stats, setStats] = useState<StatsData | false>(false);
 
   useEffect(() => {
-    data.getStats().then(stats => setStats(stats));
+    data.getStats().then((stats) => setStats(stats));
   }, []);
 
   useEffect(() => {
@@ -35,9 +35,15 @@ export default function App({ style }: AppProps) {
       const metaViewport = document.getElementById('vp');
       if (metaViewport) {
         if (screen.width < MIN_SCREEN_SIZE) {
-          metaViewport.setAttribute('content', `user-scalable=no, width=${MIN_SCREEN_SIZE}`);
+          metaViewport.setAttribute(
+            'content',
+            `user-scalable=no, width=${MIN_SCREEN_SIZE}`,
+          );
         } else {
-          metaViewport.setAttribute('content', 'width=device-width, initial-scale=1');
+          metaViewport.setAttribute(
+            'content',
+            'width=device-width, initial-scale=1',
+          );
         }
       }
     }
@@ -47,13 +53,14 @@ export default function App({ style }: AppProps) {
     return () => window.removeEventListener('resize', setViewport);
   }, []);
 
-  let content: JSX.Element | undefined = undefined;
+  let content: JSX.Element | undefined;
 
   if (stats) {
     content = (
       <div className="app__content">
         <Header />
-        <Row type={RowType.FIRST_THIRD}
+        <Row
+          type={RowType.FIRST_THIRD}
           first={<AboutMe languages={stats.languages} />}
           last={<Statistics counts={stats.total.sum} />}
         />
@@ -63,7 +70,8 @@ export default function App({ style }: AppProps) {
         <Row>
           <DaytimeComparison weekDays={stats.weekDays} />
         </Row>
-        <Row type={RowType.LAST_THIRD}
+        <Row
+          type={RowType.LAST_THIRD}
           first={<WeekdayComparison weekdays={stats.weekDays} />}
           last={<ContributionComparison counts={stats.total} />}
         />
@@ -71,7 +79,10 @@ export default function App({ style }: AppProps) {
           <Years dates={stats.dates.sum} />
         </Row>
         <Row>
-          <YearlyStatistics dates={stats.dates.sum} repos={stats.repositories} />
+          <YearlyStatistics
+            dates={stats.dates.sum}
+            repos={stats.repositories}
+          />
         </Row>
         <Row>
           <Timeline dates={stats.dates} />
@@ -82,7 +93,10 @@ export default function App({ style }: AppProps) {
   }
 
   return (
-    <div className={['app', stats ? 'app--loaded' : ''].filter(Boolean).join(' ')} style={style}>
+    <div
+      className={['app', stats ? 'app--loaded' : ''].filter(Boolean).join(' ')}
+      style={style}
+    >
       {content}
       <Loading hidden={!!stats} />
     </div>

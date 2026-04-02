@@ -1,11 +1,18 @@
 import Chart, { ChartType } from '@/components/Chart';
-import { Dict, Graph, WeekDayStats, CommitSplit } from '@/types/ComponentStats';
+import type {
+  CommitSplit,
+  Dict,
+  Graph,
+  WeekDayStats,
+} from '@/types/ComponentStats';
 
 interface DaytimeComparisonProps {
   weekDays: CommitSplit<Dict<WeekDayStats>>;
 }
 
-export default function DaytimeComparison({ weekDays }: DaytimeComparisonProps) {
+export default function DaytimeComparison({
+  weekDays,
+}: DaytimeComparisonProps) {
   const hours = Array.from({ length: 24 }).map((_x, i) => i);
   const weekDayIndices = Array.from({ length: 7 }).map((_x, i) => i);
   const openValues = Array.from({ length: 168 }).map(() => 0);
@@ -14,8 +21,10 @@ export default function DaytimeComparison({ weekDays }: DaytimeComparisonProps) 
     for (const hour of hours) {
       const openHour = weekDays.open[weekDay.toString()].hours[hour.toString()];
       if (openHour) openValues[weekDay * 24 + hour] += openHour.commitCount;
-      const closedHour = weekDays.closed[weekDay.toString()].hours[hour.toString()];
-      if (closedHour) closedValues[weekDay * 24 + hour] += closedHour.commitCount;
+      const closedHour =
+        weekDays.closed[weekDay.toString()].hours[hour.toString()];
+      if (closedHour)
+        closedValues[weekDay * 24 + hour] += closedHour.commitCount;
     }
   }
 
@@ -37,7 +46,13 @@ export default function DaytimeComparison({ weekDays }: DaytimeComparisonProps) 
   const graphs = [openGraph, closedGraph];
 
   const xLabels = [
-    'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
   ];
 
   return (

@@ -1,4 +1,5 @@
-import { DataPoint } from '@/types/ComponentStats';
+import type { DataPoint } from '@/types/ComponentStats';
+
 export type { DataPoint } from '@/types/ComponentStats';
 
 export enum BarType {
@@ -25,8 +26,9 @@ export default function Bar({ sections, type, style }: BarProps) {
     </div>
   ));
 
-  const weights = sections.map(data => `${data.value}fr`).join(' ');
-  const template = barType === BarType.HORIZONTAL ? 'gridTemplateColumns' : 'gridTemplateRows';
+  const weights = sections.map((data) => `${data.value}fr`).join(' ');
+  const template =
+    barType === BarType.HORIZONTAL ? 'gridTemplateColumns' : 'gridTemplateRows';
 
   return (
     <div className="bar" style={{ [template]: weights, ...style }}>
