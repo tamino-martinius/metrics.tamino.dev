@@ -6,17 +6,17 @@ interface ButtonGroupProps<T = string> {
   onValueChanged?: (value: T) => void;
 }
 
-export default function ButtonGroup({
+export default function ButtonGroup<T = string>({
   labels,
   values,
   onValueChanged,
-}: ButtonGroupProps) {
+}: ButtonGroupProps<T>) {
   const [active, setActive] = useState(labels.length - 1);
 
   function handleClick(index: number) {
     setActive(index);
     if (onValueChanged) {
-      onValueChanged((values || labels)[index]);
+      onValueChanged((values || (labels as T[]))[index]);
     }
   }
 
