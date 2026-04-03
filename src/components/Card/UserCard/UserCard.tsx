@@ -21,7 +21,7 @@ export const UserCard: FC<UserCardProps> = memo(({ data }) => {
     .map(([language, commitCount], i) => ({
       color: `color-${i + 1}`,
       title: language,
-      value: commitCount / commitStatTotals.commitCount,
+      value: commitCount / commitStatTotals.publicCommitCount,
     }));
 
   return (
