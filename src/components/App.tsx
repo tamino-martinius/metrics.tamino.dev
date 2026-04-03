@@ -15,6 +15,8 @@ import { WeekdayChartCard } from './Card/WeekdarChartCard/WeekdayChartCard';
 import { WeekdayComparisonCard } from './Card/WeekdayComparisonCard/WeekdayComparisonCard';
 import { YearChartCard } from './Card/YearChartCard/YearChartCard';
 import { YearHeatmapCard } from './Card/YearHeatmapCard/YearHeatmapCard';
+import { PopularReposCard } from './Card/PopularReposCard/PopularReposCard';
+import { FollowersCard } from './Card/FollowersCard/FollowersCard';
 
 const MIN_SCREEN_SIZE = 920;
 
@@ -77,6 +79,11 @@ export default function App({ style }: AppProps) {
         <Row>
           <YearHeatmapCard data={dataRef.current} />
         </Row>
+        <Row
+          type={RowType.LAST_THIRD}
+          first={<PopularReposCard data={dataRef.current} />}
+          last={<FollowersCard data={dataRef.current} />}
+        />
         <Row>
           <TimelineCard data={dataRef.current} />
         </Row>

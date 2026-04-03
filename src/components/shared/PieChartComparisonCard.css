@@ -1,0 +1,46 @@
+.pie-chart-comparison-card .legend {
+  display: block;
+}
+
+.pie-chart-comparison-card .legend > div {
+  border-bottom: 1px solid #f2f3f5;
+  margin: 0 -20px;
+  padding: 10px 20px;
+  display: grid;
+  grid-template-columns: 1fr 20fr 3fr;
+}
+
+.pie-chart-comparison-card .legend__title {
+  color: #627386;
+}
+
+.pie-chart-comparison-card .legend__value {
+  text-align: right;
+  padding: 0;
+}
+
+.pie-chart-comparison-card .legend__color {
+  margin-bottom: 0;
+}
+
+.pie-chart-comparison-card svg {
+  transform: translateX(-50%);
+  left: 50%;
+  position: absolute;
+}
+
+.pie-chart-comparison-card__path--hover {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.pie-chart-comparison-card__path {
+  fill: none;
+}
+
+.pie-chart-comparison-card__path:hover + .pie-chart-comparison-card__path--hover,
+.pie-chart-comparison-card:has(.legend > div:nth-child(1):hover) .pie-chart-comparison-card__path--first.pie-chart-comparison-card__path--hover,
+.pie-chart-comparison-card:has(.legend > div:nth-child(2):hover) .pie-chart-comparison-card__path--second.pie-chart-comparison-card__path--hover {
+  opacity: 0.08;
+}

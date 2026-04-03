@@ -1,5 +1,14 @@
 import type { MonthYearKey, PrivatePublicCommitStats } from '@/types/ComponentStats';
-import type { AccountStats, DateKey, HourKey, Month, UserStats, Weekday, Year } from '@/types/GitHubStats';
+import type {
+  AccountStats,
+  DateKey,
+  HourKey,
+  Month,
+  PublicRepositoryDetails,
+  UserStats,
+  Weekday,
+  Year,
+} from '@/types/GitHubStats';
 import { splitDateKey, splitHourKey } from '@/util/recordKey';
 
 const GITHUB_ACCOUNTS = ['tamino-martinius', 'tamino-cookieai'];
@@ -27,6 +36,7 @@ export class Data {
   #commitStatsPerHour: Partial<Record<HourKey, PrivatePublicCommitStats>> = {};
   #commitStatsPerWeekday: Partial<Record<Weekday, PrivatePublicCommitStats>> = {};
   #commitsPerRepository: Record<string, PrivatePublicCommitStats> = {};
+  #publicRepositories: Record<string, PublicRepositoryDetails> = {};
   #commitsPerYearAndRepository: Partial<Record<Year, Record<string, PrivatePublicCommitStats>>> = {};
   #commitsPerDate: Partial<Record<DateKey, PrivatePublicCommitStats>> = {};
   #commitsPerMonthAndYear: Partial<Record<MonthYearKey, PrivatePublicCommitStats>> = {};
@@ -62,6 +72,9 @@ export class Data {
       const isPublic = typeof repoDetails !== 'undefined';
       const repoName = isPublic ? repoDetails.name : `Private#${++privateIndex}`;
       const repoCommitStats = { ...EMPTY_COMMIT_STATS };
+      if (isPublic) {
+        this.#publicRepositories[repoName] = repoDetails;
+      }
       for (const [key, commitStats] of Object.entries(commitsPerHour)) {
         if (!commitStats) continue;
         const hourKey = key as HourKey;
@@ -269,6 +282,10 @@ export class Data {
 
   get years() {
     return this.#years;
+  }
+
+  get publicRepositories() {
+    return this.#publicRepositories;
   }
 }
 

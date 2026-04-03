@@ -27,6 +27,8 @@
   --color-additions: var(--color-green);
   --color-deletions: var(--color-blue);
   --color-git: var(--color-red);
+  --color-followers: var(--color-green);
+  --color-following: var(--color-blue);
   --size-container: 880px;
 }
 
