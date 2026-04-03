@@ -3,15 +3,15 @@ import { Card } from '@/components/shared/Card';
 import { CountTo } from '@/components/shared/CountTo';
 import { Legend } from '@/components/shared/Legend';
 import type { DataPoint } from '@/types/ComponentStats';
-import './StatisticsCard.css';
+import './TotalCountsCard.css';
 import { type FC, memo } from 'react';
 import type Data from '@/models/Data';
 
-interface StatisticsCardProps {
+interface TotalCountsCardProps {
   data: Data;
 }
 
-export const StatisticsCard: FC<StatisticsCardProps> = memo(({ data }) => {
+export const TotalCountsCard: FC<TotalCountsCardProps> = memo(({ data }) => {
   const { commitStatTotals } = data;
 
   const additions: DataPoint = {
@@ -31,13 +31,13 @@ export const StatisticsCard: FC<StatisticsCardProps> = memo(({ data }) => {
   };
 
   return (
-    <Card title="Statistics" className="statistics-card">
+    <Card title="Total Counts" className="total-counts-card">
       <h3>
         <CountTo inline endVal={commitStatTotals.commitCount} /> Commits
       </h3>
       <h4>In Total</h4>
       <hr />
-      <Legend className="statistics-card__legend" sections={[additions, deletions, changedFiles]} />
+      <Legend className="total-counts-card__legend" sections={[additions, deletions, changedFiles]} />
       <Bar sections={[additions, deletions]} />
     </Card>
   );

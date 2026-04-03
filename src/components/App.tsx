@@ -5,11 +5,11 @@ import { Loading } from '@/components/Loading/Loading';
 import { Row, RowType } from '@/components/shared/Row';
 import Data from '@/models/Data';
 import '@/style/index.css';
-import { StatisticsCard } from './Card/StatisticsCard/StatisticsCard';
 import { UserCard } from './Card/UserCard/UserCard';
 import './App.css';
 import { DaytimeChartCard } from './Card/DaytimeChartCard/DaytimeChartCard';
 import { TimelineCard } from './Card/TimelineCard/TimelineCard';
+import { TotalCountsCard } from './Card/TotalCountsCard/TotalCountsCard';
 import { VisibilityComparisionCard } from './Card/VisibilityComparisionCard/VisibilityComparisionCard';
 import { WeekdayChartCard } from './Card/WeekdarChartCard/WeekdayChartCard';
 import { WeekdayComparisonCard } from './Card/WeekdayComparisonCard/WeekdayComparisonCard';
@@ -58,7 +58,7 @@ export default function App({ style }: AppProps) {
         <Row
           type={RowType.FIRST_THIRD}
           first={<UserCard data={dataRef.current} />}
-          last={<StatisticsCard data={dataRef.current} />}
+          last={<TotalCountsCard data={dataRef.current} />}
         />
         <Row>
           <DaytimeChartCard data={dataRef.current} />
