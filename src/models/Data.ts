@@ -3,17 +3,18 @@ import Util from '@/models/Util';
 import type { StatsData } from '@/types/ComponentStats';
 import type { AccountStats } from '@/types/GitHubStats';
 
-const ACCOUNT_URLS = [
-  'https://raw.githubusercontent.com/tamino-martinius/github-stats/tamino-martinius/data/stats.json',
-  'https://raw.githubusercontent.com/tamino-cookieai/github-stats/tamino-cookieai/data/stats.json',
-];
-
+const GITHUB_ACCOUNTS = ['tamino-martinius', 'tamino-cookieai'];
 const MIN_WAIT_DURATION = 3000;
+
+const accountUrls = GITHUB_ACCOUNTS.map(
+  (account) =>
+    `https://raw.githubusercontent.com/${account}/github-stats/${account}/data/stats.json`,
+);
 
 export class Data {
   async getStats(): Promise<StatsData> {
     const startTime = Date.now();
-    const responses = await Promise.all(ACCOUNT_URLS.map((url) => fetch(url)));
+    const responses = await Promise.all(accountUrls.map((url) => fetch(url)));
     const accounts: AccountStats[] = await Promise.all(
       responses.map((r) => r.json()),
     );

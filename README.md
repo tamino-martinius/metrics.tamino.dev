@@ -16,7 +16,7 @@
 
 Contribution statistics are fetched at runtime from the [github-stats](https://github.com/tamino-martinius/github-stats) repository. No local data files are needed.
 
-To add or change accounts, edit the `ACCOUNT_URLS` array in `src/models/Data.ts`.
+To add or change accounts, edit the `GITHUB_ACCOUNTS` array in `src/models/Data.ts`.
 
 ## Run locally
 
