@@ -14,7 +14,7 @@ import YearlyStatistics from '@/components/YearlyStatistics';
 import Years from '@/components/Years';
 import Data from '@/models/Data';
 import type { StatsData } from '@/types/ComponentStats';
-import '@/style/index.scss';
+import '@/style/index.css';
 
 const data = new Data();
 const MIN_SCREEN_SIZE = 920;
