@@ -1,0 +1,15 @@
+.row {
+  display: grid;
+  grid-auto-rows: 1fr;
+  max-width: var(--size-container);
+  margin: 40px auto;
+  grid-column-gap: 35px;
+}
+
+.row--first-third {
+  grid-template-columns: 295px 550px;
+}
+
+.row--last-third {
+  grid-template-columns: 550px 295px;
+}

@@ -1,0 +1,55 @@
+.visibility-comparison-card {
+  height: 315px;
+}
+
+.visibility-comparison-card .legend {
+  display: block;
+}
+
+.visibility-comparison-card .legend > div {
+  border-bottom: 1px solid #f2f3f5;
+  margin: 0 -20px;
+  padding: 10px 20px;
+  display: grid;
+  grid-template-columns: 1fr 20fr 3fr;
+}
+
+.visibility-comparison-card .legend__title {
+  color: #627386;
+}
+
+.visibility-comparison-card .legend__value {
+  text-align: right;
+  padding: 0;
+}
+
+.visibility-comparison-card .legend__color {
+  margin-bottom: 0;
+}
+
+.visibility-comparison-card svg {
+  transform: translateX(-50%);
+  left: 50%;
+  position: absolute;
+}
+
+.visibility-comparison-card__path--hover {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.visibility-comparison-card__path {
+  fill: none;
+}
+
+.visibility-comparison-card__path:hover + .visibility-comparison-card__path--hover {
+  opacity: 0.08;
+}
+
+.visibility-comparison-card__path--open {
+  stroke: var(--color-public);
+}
+
+.visibility-comparison-card__path--closed {
+  stroke: var(--color-private);
+}

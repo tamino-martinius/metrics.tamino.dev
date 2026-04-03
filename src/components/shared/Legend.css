@@ -1,0 +1,33 @@
+.legend {
+  display: grid;
+  padding-bottom: 15px;
+}
+
+.legend > * {
+  min-width: 0;
+}
+
+.legend__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 500;
+  padding-right: 12px;
+}
+
+.legend__value {
+  padding-top: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-foreground-light);
+}
+
+.legend__color {
+  background-color: var(--color);
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  float: left;
+  margin: 6px 10px 20px 0;
+}

@@ -1,18 +1,6 @@
-type Year = number;
-type Month =
-  | '01'
-  | '02'
-  | '03'
-  | '04'
-  | '05'
-  | '06'
-  | '07'
-  | '08'
-  | '09'
-  | '10'
-  | '11'
-  | '12';
-type Day =
+export type Year = number;
+export type Month = '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12';
+export type Day =
   | '01'
   | '02'
   | '03'
@@ -46,8 +34,8 @@ type Day =
   | '31';
 export type DateKey = `${Year}-${Month}-${Day}`;
 
-type Weekday = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun';
-type Hour =
+export type Weekday = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun';
+export type Hour =
   | '00'
   | '01'
   | '02'

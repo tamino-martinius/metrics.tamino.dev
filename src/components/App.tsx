@@ -1,23 +1,21 @@
-import { useEffect, useMemo, useState } from 'react';
-import ContributionComparison from '@/components/ContributionComparison';
-import Daytime from '@/components/Daytime';
-import DaytimeComparison from '@/components/DaytimeComparison';
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
-import Loading from '@/components/Loading';
-import Row, { RowType } from '@/components/Row';
-import Statistics from '@/components/Statistics';
-import Timeline from '@/components/Timeline';
-import WeekdayComparison from '@/components/WeekdayComparison';
-import YearlyStatistics from '@/components/YearlyStatistics';
-import Years from '@/components/Years';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Footer } from '@/components/Layout/Footer';
+import { Header } from '@/components/Layout/Header';
+import { Loading } from '@/components/Loading/Loading';
+import { Row, RowType } from '@/components/shared/Row';
 import Data from '@/models/Data';
-import type { StatsData } from '@/types/ComponentStats';
-import type { AccountStats } from '@/types/GitHubStats';
 import '@/style/index.css';
-import { UserCard } from './UserCard/UserCard';
+import { StatisticsCard } from './Card/StatisticsCard/StatisticsCard';
+import { UserCard } from './Card/UserCard/UserCard';
+import './App.css';
+import { DaytimeChartCard } from './Card/DaytimeChartCard/DaytimeChartCard';
+import { TimelineCard } from './Card/TimelineCard/TimelineCard';
+import { VisibilityComparisionCard } from './Card/VisibilityComparisionCard/VisibilityComparisionCard';
+import { WeekdayChartCard } from './Card/WeekdarChartCard/WeekdayChartCard';
+import { WeekdayComparisonCard } from './Card/WeekdayComparisonCard/WeekdayComparisonCard';
+import { YearChartCard } from './Card/YearChartCard/YearChartCard';
+import { YearHeatmapCard } from './Card/YearHeatmapCard/YearHeatmapCard';
 
-const data = new Data();
 const MIN_SCREEN_SIZE = 920;
 
 interface AppProps {
@@ -29,15 +27,9 @@ const syncViewport = () => {
     const metaViewport = document.getElementById('vp');
     if (metaViewport) {
       if (screen.width < MIN_SCREEN_SIZE) {
-        metaViewport.setAttribute(
-          'content',
-          `user-scalable=no, width=${MIN_SCREEN_SIZE}`,
-        );
+        metaViewport.setAttribute('content', `user-scalable=no, width=${MIN_SCREEN_SIZE}`);
       } else {
-        metaViewport.setAttribute(
-          'content',
-          'width=device-width, initial-scale=1',
-        );
+        metaViewport.setAttribute('content', 'width=device-width, initial-scale=1');
       }
     }
   }
@@ -48,67 +40,53 @@ const syncViewport = () => {
 };
 
 export default function App({ style }: AppProps) {
-  const [stats, setStats] = useState<StatsData | false>(false);
-  const [accountStats, setAccountStats] = useState<AccountStats | false>(false);
+  const dataRef = useRef(new Data());
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    data.getStats().then((stats) => setStats(stats));
-    data.getAccountStats().then((stats) => setAccountStats(stats));
+    dataRef.current.fetchData().then(() => setIsLoading(false));
   }, []);
 
   useEffect(syncViewport, []);
 
-  const { isLoading, content } = useMemo(() => {
-    if (!stats || !accountStats) {
-      return { isLoading: true, content: undefined };
-    }
+  const content = useMemo(() => {
+    if (isLoading) return null;
 
-    return {
-      isLoading: false,
-      content: (
-        <div className="app__content">
-          <Header />
-          <Row
-            type={RowType.FIRST_THIRD}
-            first={<UserCard accountStats={accountStats} />}
-            last={<Statistics counts={stats.total.sum} />}
-          />
-          <Row>
-            <Daytime weekDays={stats.weekDays.sum} />
-          </Row>
-          <Row>
-            <DaytimeComparison weekDays={stats.weekDays} />
-          </Row>
-          <Row
-            type={RowType.LAST_THIRD}
-            first={<WeekdayComparison weekdays={stats.weekDays} />}
-            last={<ContributionComparison counts={stats.total} />}
-          />
-          <Row>
-            <Years dates={stats.dates.sum} />
-          </Row>
-          <Row>
-            <YearlyStatistics
-              dates={stats.dates.sum}
-              repos={stats.repositories}
-            />
-          </Row>
-          <Row>
-            <Timeline dates={stats.dates} />
-          </Row>
-          <Footer />
-        </div>
-      ),
-    };
-  }, [stats, accountStats]);
+    return (
+      <div className="app__content">
+        <Header />
+        <Row
+          type={RowType.FIRST_THIRD}
+          first={<UserCard data={dataRef.current} />}
+          last={<StatisticsCard data={dataRef.current} />}
+        />
+        <Row>
+          <DaytimeChartCard data={dataRef.current} />
+        </Row>
+        <Row>
+          <WeekdayChartCard data={dataRef.current} />
+        </Row>
+        <Row
+          type={RowType.LAST_THIRD}
+          first={<WeekdayComparisonCard data={dataRef.current} />}
+          last={<VisibilityComparisionCard data={dataRef.current} />}
+        />
+        <Row>
+          <YearChartCard data={dataRef.current} />
+        </Row>
+        <Row>
+          <YearHeatmapCard data={dataRef.current} />
+        </Row>
+        <Row>
+          <TimelineCard data={dataRef.current} />
+        </Row>
+        <Footer />
+      </div>
+    );
+  }, [isLoading]);
 
   return (
-    <div
-      className={['app', !isLoading ? 'app--loaded' : '']
-        .filter(Boolean)
-        .join(' ')}
-      style={style}
-    >
+    <div className={['app', !isLoading ? 'app--loaded' : ''].filter(Boolean).join(' ')} style={style}>
       {content}
       <Loading hidden={!isLoading} />
     </div>

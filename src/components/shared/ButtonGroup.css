@@ -1,0 +1,29 @@
+.button-group__button {
+  outline: none;
+  border: 1px solid #e4e4e4;
+  font-size: 12px;
+  font-weight: 400;
+  color: #627386;
+  padding: 4px 14px 4px 13px;
+  margin-left: -1px;
+  cursor: pointer;
+}
+
+.button-group__button:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+.button-group__button:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.button-group__button--active {
+  background: #627386;
+  border: 1px solid #627386;
+  color: #fff;
+  cursor: default;
+}
+
+.button-group__button--active + .button-group__button {
+  border-left: 1px solid #627386;
+}

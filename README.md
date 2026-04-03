@@ -1,6 +1,6 @@
-# GitHub Contributions UI
+# GitHub Metrics UI
 
-[Visit Website](https://contributions.taminomartinius.de)
+[Visit Website](https://metrics.tamino.dev)
 
 ![Preview](public/preview.gif?raw=true)
 

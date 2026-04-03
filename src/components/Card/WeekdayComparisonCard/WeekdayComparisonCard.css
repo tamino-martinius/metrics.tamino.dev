@@ -1,0 +1,19 @@
+.weekday-comparison-card {
+  height: 315px;
+}
+
+.weekday-comparison-card .bar {
+  margin: 0 33px 0 34px;
+  width: 6px;
+  float: left;
+  bottom: 0;
+  transform: translateY(calc(-100% + 125px));
+}
+
+.weekday-comparison-card .bar:last-child {
+  margin-right: 0;
+}
+
+.weekday-comparison-card .chart__grid {
+  grid-template-rows: 195px 25px;
+}
