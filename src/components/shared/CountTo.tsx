@@ -1,4 +1,5 @@
-import { type FC, useEffect, useRef, useState } from 'react';
+import { type FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import './CountTo.css';
 
 const raf = window.requestAnimationFrame;
 const caf = window.cancelAnimationFrame;
@@ -14,6 +15,9 @@ interface CountToProps {
   prefix?: string;
   suffix?: string;
   useEasing?: boolean;
+  /** When true, renders a span and reserves width for the formatted end value so following inline text does not shift during the animation. */
+  inline?: boolean;
+  className?: string;
 }
 
 function easing(t: number, b: number, c: number, d: number) {
@@ -53,10 +57,14 @@ export const CountTo: FC<CountToProps> = ({
   prefix = '',
   suffix = '',
   useEasing: useEasingProp = true,
+  inline = false,
+  className,
 }) => {
   const [displayValue, setDisplayValue] = useState(
     formatNumber(startVal, decimals, decimal, separator, prefix, suffix),
   );
+  const [inlineWidthPx, setInlineWidthPx] = useState<number | null>(null);
+  const measureRef = useRef<HTMLSpanElement>(null);
 
   const rAFRef = useRef<number | undefined>(undefined);
   const startTimeRef = useRef<number | undefined>(undefined);
@@ -64,6 +72,22 @@ export const CountTo: FC<CountToProps> = ({
   const localDurationRef = useRef(duration);
 
   const countDown = startVal > endVal;
+
+  const targetLabel = formatNumber(endVal, decimals, decimal, separator, prefix, suffix);
+  const rootClassName = ['count-to', className].filter(Boolean).join(' ');
+
+  useLayoutEffect(() => {
+    if (!inline) {
+      setInlineWidthPx(null);
+      return;
+    }
+    void targetLabel;
+    void rootClassName;
+    const el = measureRef.current;
+    if (!el) return;
+    const w = el.getBoundingClientRect().width;
+    setInlineWidthPx(Math.ceil(w));
+  }, [inline, targetLabel, rootClassName]);
 
   useEffect(() => {
     function count(timestamp: number) {
@@ -118,5 +142,19 @@ export const CountTo: FC<CountToProps> = ({
     };
   }, [startVal, endVal, duration, autoplay, decimals, decimal, separator, prefix, suffix, useEasingProp, countDown]);
 
-  return <div className="count-to">{displayValue}</div>;
+  if (inline) {
+    return (
+      <span
+        className={[rootClassName, 'count-to--inline'].filter(Boolean).join(' ')}
+        style={inlineWidthPx !== null ? { width: inlineWidthPx } : undefined}
+      >
+        <span ref={measureRef} aria-hidden className="count-to__measure">
+          {targetLabel}
+        </span>
+        {displayValue}
+      </span>
+    );
+  }
+
+  return <div className={rootClassName}>{displayValue}</div>;
 };

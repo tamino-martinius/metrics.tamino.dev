@@ -1,0 +1,12 @@
+.count-to--inline {
+  display: inline-block;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.count-to__measure {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  white-space: nowrap;
+}

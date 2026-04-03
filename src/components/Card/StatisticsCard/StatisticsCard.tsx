@@ -33,8 +33,7 @@ export const StatisticsCard: FC<StatisticsCardProps> = memo(({ data }) => {
   return (
     <Card title="Statistics" className="statistics-card">
       <h3>
-        <CountTo endVal={commitStatTotals.commitCount} />
-        Commits
+        <CountTo inline endVal={commitStatTotals.commitCount} /> Commits
       </h3>
       <h4>In Total</h4>
       <hr />

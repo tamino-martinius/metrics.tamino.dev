@@ -6,6 +6,7 @@ import { Heatmap } from '@/components/shared/Heatmap';
 import { Legend } from '@/components/shared/Legend';
 import type { DataPoint } from '@/types/ComponentStats';
 import './YearHeatmapCard.css';
+import { CountTo } from '@/components/shared/CountTo';
 import type Data from '@/models/Data';
 import { getDateKeysForYear } from '@/util/recordKey';
 
@@ -55,7 +56,9 @@ export const YearHeatmapCard: FC<YearHeatmapCardProps> = ({ data }) => {
       }
     >
       <h3>Year {year}</h3>
-      <h4>{commitsPerYear[year]?.commitCount} Commits</h4>
+      <h4>
+        <CountTo inline endVal={commitsPerYear[year]?.commitCount ?? 0} /> Commits
+      </h4>
       <hr />
       <h3 className="year-heatmap-card__highlights">Highlights</h3>
       <Heatmap counts={heatmapCounts} year={year} />
