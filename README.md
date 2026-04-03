@@ -1,24 +1,33 @@
-# GitHub Contributions UI
+# GitHub Metrics UI
 
-[Visit Website](https://contributions.taminomartinius.de)
+[Visit Website](https://metrics.tamino.dev)
 
 ![Preview](public/preview.gif?raw=true)
 
-## Requirement
+## Tech Stack
 
-You need to create a json file including statistics about your commit. I created another [another GitHub project](https://github.com/tamino-martinius/lambda-get-all-github-contributions) to fetch them with an AWS lambda function (can also be fetched locally using `sam local`.
+- [React](https://react.dev/) 19
+- [TypeScript](https://www.typescriptlang.org/) 6
+- [Vite](https://vite.dev/)
+- [D3](https://d3js.org/) for charts and visualizations
+- [Sass](https://sass-lang.com/) for styling
 
-## Configuration
+## Data Source
 
-Change the `GITHUB_USER_LOGIN` to the filename of your statistics json.
+Contribution statistics are fetched at runtime from the [github-stats](https://github.com/tamino-martinius/github-stats) repository. No local data files are needed.
+
+To add or change accounts, edit the `GITHUB_ACCOUNTS` array in `src/models/Data.ts`.
 
 ## Run locally
 
 - `npm install` (once)
-- `npm run start` (to start the local webserver on port 3000)
+- `npm run dev` (to start the Vite dev server)
+
+## Build
+
+- `npm run build` (outputs to `dist/`)
+- `npm run preview` (preview the production build locally)
 
 ## Deploy
 
-You can either run `npm run build:production` to create the release code at the `dist` folder, or change the settings at the `config` file in the root directory to deploy the code to AWS S3 with `npm run deploy`.
-
-The project is build to run best within the same s3 bucket which is used for the lambda function.
+Run `npm run deploy` to deploy via the deploy script.

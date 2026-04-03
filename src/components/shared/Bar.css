@@ -1,0 +1,38 @@
+.bar {
+  display: grid;
+  grid-column-gap: 2px;
+}
+
+.bar__section {
+  color: #fff0;
+  background-color: var(--color);
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bar__section.bar--horizontal {
+  padding: 2px 5px 3px;
+}
+
+.bar__section.bar--horizontal:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.bar__section.bar--horizontal:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+.bar__section.bar--vertical {
+  font-size: 0;
+}
+
+.bar__section.bar--vertical:first-child {
+  border-radius: 1px 1px 0 0;
+}
+
+.bar__section.bar--vertical:last-child {
+  border-radius: 0 0 1px 1px;
+}

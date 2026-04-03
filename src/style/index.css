@@ -1,0 +1,125 @@
+:root {
+  --color-background: #f8f9fa;
+  --color-foreground: #22272e;
+  --color-foreground-light: #627386;
+  --color-border-dark: #f2f4f6;
+  --color-primary: #c9cbce;
+  --color-empty: #f4faff;
+  --color-green: #00d559;
+  --color-blue: #00a5fe;
+  --color-red: #f05033;
+  --color-0: #d4dae1;
+  --color-1: #673bd6;
+  --color-2: #535ae0;
+  --color-3: #3f77e9;
+  --color-4: #2c96f2;
+  --color-5: #34adf0;
+  --color-6: #56bce1;
+  --color-7: #7accd4;
+  --color-8: #9ddbc6;
+  --color-9: #d5efe4;
+  --color-10: #dddae4;
+  --color-11: #e5aed4;
+  --color-12: #e986b4;
+  --color-13: #ff8585;
+  --color-public: var(--color-green);
+  --color-private: var(--color-blue);
+  --color-additions: var(--color-green);
+  --color-deletions: var(--color-blue);
+  --color-git: var(--color-red);
+  --size-container: 880px;
+}
+
+@font-face {
+  font-family: "Nutanix Soft";
+  src: url("/NutanixSoft-Thin.otf") format("opentype");
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: "Nutanix Soft";
+  src: url("/NutanixSoft-Medium.otf") format("opentype");
+  font-weight: 400;
+}
+
+/* TODO: maybe can be removed */
+@font-face {
+  font-family: "Nutanix Soft";
+  src: url("/NutanixSoft-Regular.otf") format("opentype");
+  font-weight: 500;
+}
+
+/* TODO: maybe can be removed */
+@font-face {
+  font-family: "Nutanix Soft";
+  src: url("/NutanixSoft-Semibold.otf") format("opentype");
+  font-weight: 600;
+}
+
+/* TODO: maybe can be removed */
+@font-face {
+  font-family: "Nutanix Soft";
+  src: url("/NutanixSoft-Bold.otf") format("opentype");
+  font-weight: 700;
+}
+
+html,
+body,
+button {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Nutanix Soft", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: scroll;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+h3 {
+  font-weight: 500;
+  font-size: 18px;
+  padding-top: 14px;
+}
+
+h4 {
+  font-weight: 500;
+  font-size: 14px;
+  padding-top: 2px;
+  color: var(--color-foreground-light);
+}
+
+hr {
+  border: none;
+  border-bottom: 1px solid #d5dae0;
+  width: 30px;
+  margin: 17px 0 16px 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

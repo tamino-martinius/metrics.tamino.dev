@@ -1,0 +1,59 @@
+.card {
+  background: #fff;
+  border-radius: 4px;
+  position: relative;
+}
+
+.card__title {
+  line-height: 38px;
+  border-bottom: 1px solid #f2f3f5;
+  text-align: left;
+  padding-left: 20px;
+  position: relative;
+}
+
+.card__title .button-group {
+  position: absolute;
+  top: 0;
+  right: 20px;
+}
+
+.card__content {
+  position: relative;
+  padding: 0 20px;
+}
+
+.card__footer {
+  height: 37px;
+  line-height: 37px;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid #f2f3f5;
+  text-align: center;
+  position: absolute;
+  overflow: hidden;
+}
+
+.card__footer .legend {
+  display: inline-block;
+}
+
+.card__footer .legend > div {
+  display: inline-block;
+}
+
+.card__footer .legend__value {
+  display: none;
+}
+
+.card__footer .legend__color {
+  margin-top: 16px;
+  margin-left: 10px;
+}
+
+.card__footer .legend__title {
+  padding-right: 10px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #627386;
+}

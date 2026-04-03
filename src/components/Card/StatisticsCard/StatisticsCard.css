@@ -1,0 +1,9 @@
+.statistics-card .count-to {
+  display: inline-block;
+  width: 60px;
+}
+
+.statistics-card__legend {
+  grid-row-gap: 8px;
+  width: 357px;
+}

@@ -1,0 +1,87 @@
+.chart__grid {
+  display: grid;
+  grid-template-rows: 240px 25px;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+}
+
+.chart__axis {
+  font-size: 12px;
+  font-weight: 400;
+  color: #9aa5b5;
+}
+
+.chart__axis--x {
+  padding: 10px 0;
+  padding-top: 5px;
+  border-top: 1px solid #f2f4f6;
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.chart__axis--x > * {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: center;
+}
+
+.chart__axis--y {
+  grid-area: yAxis;
+  padding-top: 24px;
+}
+
+.chart__axis--y label {
+  display: block;
+  padding-top: 33px;
+  text-align: center;
+  padding-right: 15px;
+}
+
+.chart__canvas {
+  align-self: end;
+}
+
+.chart__canvas svg {
+  overflow: visible;
+}
+
+.chart__canvas:before,
+.chart__canvas:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 20px;
+  height: calc(100% - 25px);
+  width: 50px;
+}
+
+.chart__canvas.chart--faded:before {
+  left: 20px;
+  background: linear-gradient(to right, #fff 0%, #fff 40%, #fff0 100%);
+}
+
+.chart__canvas.chart--faded:after {
+  right: 20px;
+  background: linear-gradient(to left, #fff 0%, #fff 40%, #fff0 100%);
+}
+
+.chart__graph {
+  fill: none;
+  stroke: var(--color);
+  stroke-width: 1.5;
+}
+
+.chart__area {
+  fill: var(--color);
+  opacity: 0.08;
+}
+
+.chart--lines .chart__area {
+  opacity: 0;
+}
+
+.chart__divider {
+  stroke: #7c8d9f;
+}

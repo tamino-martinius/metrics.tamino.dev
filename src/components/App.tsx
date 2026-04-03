@@ -1,36 +1,30 @@
-import { Vue, Component } from 'vue-property-decorator';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Footer } from '@/components/Layout/Footer';
+import { Header } from '@/components/Layout/Header';
+import { Loading } from '@/components/Loading/Loading';
+import { Row, RowType } from '@/components/shared/Row';
 import Data from '@/models/Data';
-import Footer from '@/components/Footer';
-import Loading from '@/components/Loading';
-import Header from '@/components/Header';
-import Daytime from '@/components/Daytime';
-import DaytimeComparison from '@/components/DaytimeComparison';
-import AboutMe from '@/components/AboutMe';
-import Statistics from '@/components/Statistics';
-import ContributionComparison from '@/components/ContributionComparison';
-import Timeline from '@/components/Timeline';
-import WeekdayComparison from '@/components/WeekdayComparison';
-import YearlyStatistics from '@/components/YearlyStatistics';
-import Years from '@/components/Years';
-import Row, { RowType } from '@/components/Row';
-import { StatsData } from '@/types';
-import '../style/index.scss';
+import '@/style/index.css';
+import { StatisticsCard } from './Card/StatisticsCard/StatisticsCard';
+import { UserCard } from './Card/UserCard/UserCard';
+import './App.css';
+import { DaytimeChartCard } from './Card/DaytimeChartCard/DaytimeChartCard';
+import { TimelineCard } from './Card/TimelineCard/TimelineCard';
+import { VisibilityComparisionCard } from './Card/VisibilityComparisionCard/VisibilityComparisionCard';
+import { WeekdayChartCard } from './Card/WeekdarChartCard/WeekdayChartCard';
+import { WeekdayComparisonCard } from './Card/WeekdayComparisonCard/WeekdayComparisonCard';
+import { YearChartCard } from './Card/YearChartCard/YearChartCard';
+import { YearHeatmapCard } from './Card/YearHeatmapCard/YearHeatmapCard';
 
-const data = new Data();
 const MIN_SCREEN_SIZE = 920;
 
-@Component
-export default class extends Vue {
-  stats: StatsData | false = false;
+interface AppProps {
+  style?: React.CSSProperties;
+}
 
-  created() {
-    data.getStats().then(stats => this.stats = stats);
-  }
-
-  setViewport() {
+const syncViewport = () => {
+  function setViewport() {
     const metaViewport = document.getElementById('vp');
-    console.log(metaViewport);
-
     if (metaViewport) {
       if (screen.width < MIN_SCREEN_SIZE) {
         metaViewport.setAttribute('content', `user-scalable=no, width=${MIN_SCREEN_SIZE}`);
@@ -40,54 +34,61 @@ export default class extends Vue {
     }
   }
 
-  mounted() {
-    this.setViewport();
-    window.addEventListener('resize', this.setViewport);
-  }
+  setViewport();
+  window.addEventListener('resize', setViewport);
+  return () => window.removeEventListener('resize', setViewport);
+};
 
-  destroyed() {
-    window.removeEventListener('resize', this.setViewport);
-  }
+export default function App({ style }: AppProps) {
+  const dataRef = useRef(new Data());
+  const [isLoading, setIsLoading] = useState(true);
 
-  render() {
-    let content: JSX.Element | undefined = undefined;
+  useEffect(() => {
+    dataRef.current.fetchData().then(() => setIsLoading(false));
+  }, []);
 
-    if (this.stats) {
-      content = (
-        <div class="app__content">
-          <Header />
-          <Row type={RowType.FIRST_THIRD}>
-            <AboutMe slot="first" languages={this.stats.languages} counts={this.stats.total.sum} />
-            <Statistics slot="last" counts={this.stats.total.sum} />
-          </Row>
-          <Row>
-            <Daytime weekDays={this.stats.weekDays.sum} />
-          </Row>
-          <Row>
-            <DaytimeComparison weekDays={this.stats.weekDays} />
-          </Row>
-          <Row type={RowType.LAST_THIRD}>
-            <WeekdayComparison slot="first" weekdays={this.stats.weekDays} />
-            <ContributionComparison slot="last" counts={this.stats.total} />
-          </Row>
-          <Row>
-            <Years dates={this.stats.dates.sum} />
-          </Row>
-          <Row>
-            <YearlyStatistics dates={this.stats.dates.sum} repos={this.stats.repositories} />
-          </Row>
-          <Row>
-            <Timeline dates={this.stats.dates} />
-          </Row>
-          <Footer />
-        </div>
-      );
-    }
+  useEffect(syncViewport, []);
+
+  const content = useMemo(() => {
+    if (isLoading) return null;
+
     return (
-      <div class={['app', this.stats ? 'app--loaded' : '']}>
-        {content}
-        <Loading hidden={!!this.stats} />
+      <div className="app__content">
+        <Header />
+        <Row
+          type={RowType.FIRST_THIRD}
+          first={<UserCard data={dataRef.current} />}
+          last={<StatisticsCard data={dataRef.current} />}
+        />
+        <Row>
+          <DaytimeChartCard data={dataRef.current} />
+        </Row>
+        <Row>
+          <WeekdayChartCard data={dataRef.current} />
+        </Row>
+        <Row
+          type={RowType.LAST_THIRD}
+          first={<WeekdayComparisonCard data={dataRef.current} />}
+          last={<VisibilityComparisionCard data={dataRef.current} />}
+        />
+        <Row>
+          <YearChartCard data={dataRef.current} />
+        </Row>
+        <Row>
+          <YearHeatmapCard data={dataRef.current} />
+        </Row>
+        <Row>
+          <TimelineCard data={dataRef.current} />
+        </Row>
+        <Footer />
       </div>
     );
-  }
+  }, [isLoading]);
+
+  return (
+    <div className={['app', !isLoading ? 'app--loaded' : ''].filter(Boolean).join(' ')} style={style}>
+      {content}
+      <Loading hidden={!isLoading} />
+    </div>
+  );
 }
