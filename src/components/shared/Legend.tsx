@@ -19,7 +19,15 @@ export const Legend: FC<LegendProps> = memo(({ sections, columns, decimals, clas
   const legends = sections.map((data, i) => (
     <div key={i}>
       <div className="legend__color" style={{ '--color': `var(--${data.color})` } as React.CSSProperties} />
-      <div className="legend__title">{data.title}</div>
+      <div className="legend__title">
+        {data.url ? (
+          <a href={data.url} target="_blank" rel="noreferrer">
+            {data.title}
+          </a>
+        ) : (
+          data.title
+        )}
+      </div>
       <div className="legend__value">
         <CountTo
           decimals={decimals}

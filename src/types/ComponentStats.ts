@@ -4,6 +4,7 @@ export interface DataPoint {
   title: string;
   color: string;
   value: number;
+  url?: string;
 }
 
 export interface Graph extends DataPoint {

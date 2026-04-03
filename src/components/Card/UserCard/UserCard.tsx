@@ -27,6 +27,7 @@ export const UserCard: FC<UserCardProps> = memo(({ data }) => {
   return (
     <Card
       title={user.name}
+      titleUrl={user.url}
       className="user-card"
       titleSlot={<img src={user.avatarUrl} alt={user.name} className="user-card__avatar" />}
     >

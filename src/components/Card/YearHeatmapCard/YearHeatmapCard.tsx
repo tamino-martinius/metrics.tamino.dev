@@ -17,7 +17,7 @@ interface YearHeatmapCardProps {
 const MAX_DISPLAYED_REPOS = 6;
 
 export const YearHeatmapCard: FC<YearHeatmapCardProps> = ({ data }) => {
-  const { commitsPerDate, commitsPerYearAndRepository, commitsPerYear, years } = data;
+  const { commitsPerDate, commitsPerYearAndRepository, commitsPerYear, publicRepositories, years } = data;
   const startTimestamp = new Date(Object.keys(commitsPerDate)[0]).getTime();
 
   const [year, setYear] = useState(years[years.length - 1]);
@@ -38,6 +38,7 @@ export const YearHeatmapCard: FC<YearHeatmapCardProps> = ({ data }) => {
       title: repo.name,
       color: `color-${i + 1}`,
       value: repo.commitCount,
+      url: publicRepositories[repo.name]?.url,
     }));
 
   if (repositories.length > MAX_DISPLAYED_REPOS) {
