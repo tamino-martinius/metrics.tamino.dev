@@ -35,6 +35,7 @@
 
 .visibility-comparison-card__path--hover {
   opacity: 0;
+  transition: opacity 0.3s ease;
   pointer-events: none;
 }
 
@@ -42,7 +43,9 @@
   fill: none;
 }
 
-.visibility-comparison-card__path:hover + .visibility-comparison-card__path--hover {
+.visibility-comparison-card__path:hover + .visibility-comparison-card__path--hover,
+.visibility-comparison-card:has(.legend > div:nth-child(1):hover) .visibility-comparison-card__path--open.visibility-comparison-card__path--hover,
+.visibility-comparison-card:has(.legend > div:nth-child(2):hover) .visibility-comparison-card__path--closed.visibility-comparison-card__path--hover {
   opacity: 0.08;
 }
 
