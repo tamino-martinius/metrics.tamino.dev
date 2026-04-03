@@ -71,11 +71,13 @@
   fill: none;
   stroke: var(--color);
   stroke-width: 1.5;
+  transition: d 0.3s ease;
 }
 
 .chart__area {
   fill: var(--color);
   opacity: 0.08;
+  transition: d 0.3s ease, opacity 0.3s ease;
 }
 
 .chart--lines .chart__area {

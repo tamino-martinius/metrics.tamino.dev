@@ -101,14 +101,22 @@ export const Chart: FC<ChartProps> = ({
       <path
         key={`area-${i}`}
         className="chart__area"
-        d={createArea(graph.values, i) || undefined}
-        style={{ '--color': `var(--${graph.color})` } as React.CSSProperties}
+        style={
+          {
+            '--color': `var(--${graph.color})`,
+            d: `path("${createArea(graph.values, i)}")`,
+          } as React.CSSProperties
+        }
       />,
       <path
         key={`line-${i}`}
         className="chart__graph"
-        d={createPath(graph.values, i) || undefined}
-        style={{ '--color': `var(--${graph.color})` } as React.CSSProperties}
+        style={
+          {
+            '--color': `var(--${graph.color})`,
+            d: `path("${createPath(graph.values, i)}")`,
+          } as React.CSSProperties
+        }
       />,
     );
     if (currentType === ChartType.STACKED) {
