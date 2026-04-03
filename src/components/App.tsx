@@ -8,6 +8,8 @@ import '@/style/index.css';
 import { UserCard } from './Card/UserCard/UserCard';
 import './App.css';
 import { DaytimeChartCard } from './Card/DaytimeChartCard/DaytimeChartCard';
+import { FollowersCard } from './Card/FollowersCard/FollowersCard';
+import { PopularReposCard } from './Card/PopularReposCard/PopularReposCard';
 import { TimelineCard } from './Card/TimelineCard/TimelineCard';
 import { TotalCountsCard } from './Card/TotalCountsCard/TotalCountsCard';
 import { VisibilityComparisionCard } from './Card/VisibilityComparisionCard/VisibilityComparisionCard';
@@ -15,8 +17,6 @@ import { WeekdayChartCard } from './Card/WeekdarChartCard/WeekdayChartCard';
 import { WeekdayComparisonCard } from './Card/WeekdayComparisonCard/WeekdayComparisonCard';
 import { YearChartCard } from './Card/YearChartCard/YearChartCard';
 import { YearHeatmapCard } from './Card/YearHeatmapCard/YearHeatmapCard';
-import { PopularReposCard } from './Card/PopularReposCard/PopularReposCard';
-import { FollowersCard } from './Card/FollowersCard/FollowersCard';
 
 const MIN_SCREEN_SIZE = 920;
 

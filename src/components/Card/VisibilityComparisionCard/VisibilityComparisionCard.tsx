@@ -26,5 +26,7 @@ export const VisibilityComparisionCard: FC<VisibilityComparisionCardProps> = mem
     },
   ];
 
-  return <PieChartComparisonCard title="Visibility Comparison" className="visibility-comparison-card" sections={sections} />;
+  return (
+    <PieChartComparisonCard title="Visibility Comparison" className="visibility-comparison-card" sections={sections} />
+  );
 });

@@ -40,7 +40,9 @@
 }
 
 .pie-chart-comparison-card__path:hover + .pie-chart-comparison-card__path--hover,
-.pie-chart-comparison-card:has(.legend > div:nth-child(1):hover) .pie-chart-comparison-card__path--first.pie-chart-comparison-card__path--hover,
-.pie-chart-comparison-card:has(.legend > div:nth-child(2):hover) .pie-chart-comparison-card__path--second.pie-chart-comparison-card__path--hover {
+.pie-chart-comparison-card:has(.legend > div:nth-child(1):hover)
+  .pie-chart-comparison-card__path--first.pie-chart-comparison-card__path--hover,
+.pie-chart-comparison-card:has(.legend > div:nth-child(2):hover)
+  .pie-chart-comparison-card__path--second.pie-chart-comparison-card__path--hover {
   opacity: 0.08;
 }

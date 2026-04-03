@@ -33,69 +33,62 @@ function describeArc(x: number, y: number, radius: number, startAngle: number, e
   return ['M', start.x, start.y, 'A', radius, radius, 0, arcSweep, 0, end.x, end.y].join(' ');
 }
 
-export const PieChartComparisonCard: FC<PieChartComparisonCardProps> = memo(
-  ({ title, sections, className }) => {
-    const [first, second] = sections;
-    const total = first.value + second.value;
-    const angle = total > 0 ? (first.value / total) * 360 : 180;
+export const PieChartComparisonCard: FC<PieChartComparisonCardProps> = memo(({ title, sections, className }) => {
+  const [first, second] = sections;
+  const total = first.value + second.value;
+  const angle = total > 0 ? (first.value / total) * 360 : 180;
 
-    const cardClass = ['pie-chart-comparison-card', className].filter(Boolean).join(' ');
+  const cardClass = ['pie-chart-comparison-card', className].filter(Boolean).join(' ');
 
-    return (
-      <Card title={title} className={cardClass}>
-        <Legend sections={sections} />
-        <svg
-          viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`}
-          width={`${SVG_SIZE}px`}
-          height={`${SVG_SIZE}px`}
-          aria-label={title}
-        >
-          <path
-            className="pie-chart-comparison-card__path pie-chart-comparison-card__path--first"
-            style={{ strokeWidth: `${STROKE_WIDTH}px`, stroke: `var(--${first.color})` }}
-            d={describeArc(
-              SVG_SIZE / 2,
-              SVG_SIZE / 2,
-              SVG_SIZE / 2 - STROKE_WIDTH / 2,
-              ANGLE_START + ANGLE_GAP,
-              angle - ANGLE_GAP,
-            )}
-          />
-          <path
-            className="pie-chart-comparison-card__path pie-chart-comparison-card__path--first pie-chart-comparison-card__path--hover"
-            style={{ strokeWidth: `${HOVER_WIDTH}px`, stroke: `var(--${first.color})` }}
-            d={describeArc(
-              SVG_SIZE / 2,
-              SVG_SIZE / 2,
-              SVG_SIZE / 2 - HOVER_WIDTH / 2,
-              ANGLE_START + ANGLE_GAP,
-              angle - ANGLE_GAP,
-            )}
-          />
-          <path
-            className="pie-chart-comparison-card__path pie-chart-comparison-card__path--second"
-            style={{ strokeWidth: `${STROKE_WIDTH}px`, stroke: `var(--${second.color})` }}
-            d={describeArc(
-              SVG_SIZE / 2,
-              SVG_SIZE / 2,
-              SVG_SIZE / 2 - STROKE_WIDTH / 2,
-              angle + ANGLE_GAP,
-              ANGLE_END - ANGLE_GAP,
-            )}
-          />
-          <path
-            className="pie-chart-comparison-card__path pie-chart-comparison-card__path--second pie-chart-comparison-card__path--hover"
-            style={{ strokeWidth: `${HOVER_WIDTH}px`, stroke: `var(--${second.color})` }}
-            d={describeArc(
-              SVG_SIZE / 2,
-              SVG_SIZE / 2,
-              SVG_SIZE / 2 - HOVER_WIDTH / 2,
-              angle + ANGLE_GAP,
-              ANGLE_END - ANGLE_GAP,
-            )}
-          />
-        </svg>
-      </Card>
-    );
-  },
-);
+  return (
+    <Card title={title} className={cardClass}>
+      <Legend sections={sections} />
+      <svg viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`} width={`${SVG_SIZE}px`} height={`${SVG_SIZE}px`} aria-label={title}>
+        <path
+          className="pie-chart-comparison-card__path pie-chart-comparison-card__path--first"
+          style={{ strokeWidth: `${STROKE_WIDTH}px`, stroke: `var(--${first.color})` }}
+          d={describeArc(
+            SVG_SIZE / 2,
+            SVG_SIZE / 2,
+            SVG_SIZE / 2 - STROKE_WIDTH / 2,
+            ANGLE_START + ANGLE_GAP,
+            angle - ANGLE_GAP,
+          )}
+        />
+        <path
+          className="pie-chart-comparison-card__path pie-chart-comparison-card__path--first pie-chart-comparison-card__path--hover"
+          style={{ strokeWidth: `${HOVER_WIDTH}px`, stroke: `var(--${first.color})` }}
+          d={describeArc(
+            SVG_SIZE / 2,
+            SVG_SIZE / 2,
+            SVG_SIZE / 2 - HOVER_WIDTH / 2,
+            ANGLE_START + ANGLE_GAP,
+            angle - ANGLE_GAP,
+          )}
+        />
+        <path
+          className="pie-chart-comparison-card__path pie-chart-comparison-card__path--second"
+          style={{ strokeWidth: `${STROKE_WIDTH}px`, stroke: `var(--${second.color})` }}
+          d={describeArc(
+            SVG_SIZE / 2,
+            SVG_SIZE / 2,
+            SVG_SIZE / 2 - STROKE_WIDTH / 2,
+            angle + ANGLE_GAP,
+            ANGLE_END - ANGLE_GAP,
+          )}
+        />
+        <path
+          className="pie-chart-comparison-card__path pie-chart-comparison-card__path--second pie-chart-comparison-card__path--hover"
+          style={{ strokeWidth: `${HOVER_WIDTH}px`, stroke: `var(--${second.color})` }}
+          d={describeArc(
+            SVG_SIZE / 2,
+            SVG_SIZE / 2,
+            SVG_SIZE / 2 - HOVER_WIDTH / 2,
+            angle + ANGLE_GAP,
+            ANGLE_END - ANGLE_GAP,
+          )}
+        />
+      </svg>
+    </Card>
+  );
+});
