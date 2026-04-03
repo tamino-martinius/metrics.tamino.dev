@@ -12,6 +12,7 @@
 .heatmap__cell {
   background-color: var(--color);
   border-radius: 2px;
+  transition: background-color 0.1s ease;
 }
 
 .heatmap__legend {

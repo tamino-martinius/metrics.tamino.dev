@@ -1,6 +1,7 @@
 .bar {
   display: grid;
   grid-column-gap: 2px;
+  transition: grid-template-columns 0.3s ease, grid-template-rows 0.3s ease;
 }
 
 .bar__section {

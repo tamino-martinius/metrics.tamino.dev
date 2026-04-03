@@ -61,7 +61,6 @@ export const TimelineCard: FC<TimelineCardProps> = ({ data }) => {
       graphs={graphs}
       xLabels={years.map(String)}
       yScale={'linear'}
-      // yScale={mode === 'Commits' ? 'symlog' : 'linear'}
       titleSlot={<ButtonGroup labels={MODES} values={[...MODES]} onValueChanged={setMode} />}
     />
   );

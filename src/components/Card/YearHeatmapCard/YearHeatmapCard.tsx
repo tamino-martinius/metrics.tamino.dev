@@ -18,6 +18,7 @@ const MAX_DISPLAYED_REPOS = 6;
 
 export const YearHeatmapCard: FC<YearHeatmapCardProps> = ({ data }) => {
   const { commitsPerDate, commitsPerYearAndRepository, commitsPerYear, years } = data;
+  const startTimestamp = new Date(Object.keys(commitsPerDate)[0]).getTime();
 
   const [year, setYear] = useState(years[years.length - 1]);
 
@@ -57,13 +58,13 @@ export const YearHeatmapCard: FC<YearHeatmapCardProps> = ({ data }) => {
     >
       <h3>Year {year}</h3>
       <h4>
-        <CountTo inline endVal={commitsPerYear[year]?.commitCount ?? 0} /> Commits
+        <CountTo duration={500} inline endVal={commitsPerYear[year]?.commitCount ?? 0} /> Commits
       </h4>
       <hr />
       <h3 className="year-heatmap-card__highlights">Highlights</h3>
-      <Heatmap counts={heatmapCounts} year={year} />
+      <Heatmap counts={heatmapCounts} year={year} startTimestamp={startTimestamp} endTimestamp={Date.now()} />
       <Legend className="year-heatmap-card__legend" sections={highlightRepositories} />
-      <Bar sections={highlightRepositories} />
+      <Bar sections={highlightRepositories} sectionCount={MAX_DISPLAYED_REPOS} />
     </Card>
   );
 };

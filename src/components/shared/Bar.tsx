@@ -9,11 +9,12 @@ export enum BarType {
 
 interface BarProps {
   sections: DataPoint[];
+  sectionCount?: number;
   type?: BarType;
   style?: React.CSSProperties;
 }
 
-export const Bar: FC<BarProps> = memo(({ sections, type, style }) => {
+export const Bar: FC<BarProps> = memo(({ sections, sectionCount, type, style }) => {
   const barType = type || BarType.HORIZONTAL;
 
   const sectionElements = sections.map((data, i) => (
@@ -26,11 +27,14 @@ export const Bar: FC<BarProps> = memo(({ sections, type, style }) => {
     </div>
   ));
 
-  const weights = sections.map((data) => `${data.value}fr`).join(' ');
+  const weights = sections.map((data) => `${data.value}fr`);
+  if (sectionCount && sectionCount > sections.length) {
+    weights.push(...Array.from({ length: sectionCount - sections.length }, () => '0fr'));
+  }
   const template = barType === BarType.HORIZONTAL ? 'gridTemplateColumns' : 'gridTemplateRows';
 
   return (
-    <div className="bar" style={{ [template]: weights, ...style }}>
+    <div className="bar" style={{ [template]: weights.join(' '), ...style }}>
       {sectionElements}
     </div>
   );
