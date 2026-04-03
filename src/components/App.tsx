@@ -1,5 +1,4 @@
-import { type JSX, useEffect, useState } from 'react';
-import AboutMe from '@/components/AboutMe';
+import { useEffect, useMemo, useState } from 'react';
 import ContributionComparison from '@/components/ContributionComparison';
 import Daytime from '@/components/Daytime';
 import DaytimeComparison from '@/components/DaytimeComparison';
@@ -14,7 +13,9 @@ import YearlyStatistics from '@/components/YearlyStatistics';
 import Years from '@/components/Years';
 import Data from '@/models/Data';
 import type { StatsData } from '@/types/ComponentStats';
+import type { AccountStats } from '@/types/GitHubStats';
 import '@/style/index.css';
+import { UserCard } from './UserCard/UserCard';
 
 const data = new Data();
 const MIN_SCREEN_SIZE = 920;
@@ -23,82 +24,93 @@ interface AppProps {
   style?: React.CSSProperties;
 }
 
+const syncViewport = () => {
+  function setViewport() {
+    const metaViewport = document.getElementById('vp');
+    if (metaViewport) {
+      if (screen.width < MIN_SCREEN_SIZE) {
+        metaViewport.setAttribute(
+          'content',
+          `user-scalable=no, width=${MIN_SCREEN_SIZE}`,
+        );
+      } else {
+        metaViewport.setAttribute(
+          'content',
+          'width=device-width, initial-scale=1',
+        );
+      }
+    }
+  }
+
+  setViewport();
+  window.addEventListener('resize', setViewport);
+  return () => window.removeEventListener('resize', setViewport);
+};
+
 export default function App({ style }: AppProps) {
   const [stats, setStats] = useState<StatsData | false>(false);
+  const [accountStats, setAccountStats] = useState<AccountStats | false>(false);
 
   useEffect(() => {
     data.getStats().then((stats) => setStats(stats));
+    data.getAccountStats().then((stats) => setAccountStats(stats));
   }, []);
 
-  useEffect(() => {
-    function setViewport() {
-      const metaViewport = document.getElementById('vp');
-      if (metaViewport) {
-        if (screen.width < MIN_SCREEN_SIZE) {
-          metaViewport.setAttribute(
-            'content',
-            `user-scalable=no, width=${MIN_SCREEN_SIZE}`,
-          );
-        } else {
-          metaViewport.setAttribute(
-            'content',
-            'width=device-width, initial-scale=1',
-          );
-        }
-      }
+  useEffect(syncViewport, []);
+
+  const { isLoading, content } = useMemo(() => {
+    if (!stats || !accountStats) {
+      return { isLoading: true, content: undefined };
     }
 
-    setViewport();
-    window.addEventListener('resize', setViewport);
-    return () => window.removeEventListener('resize', setViewport);
-  }, []);
-
-  let content: JSX.Element | undefined;
-
-  if (stats) {
-    content = (
-      <div className="app__content">
-        <Header />
-        <Row
-          type={RowType.FIRST_THIRD}
-          first={<AboutMe languages={stats.languages} />}
-          last={<Statistics counts={stats.total.sum} />}
-        />
-        <Row>
-          <Daytime weekDays={stats.weekDays.sum} />
-        </Row>
-        <Row>
-          <DaytimeComparison weekDays={stats.weekDays} />
-        </Row>
-        <Row
-          type={RowType.LAST_THIRD}
-          first={<WeekdayComparison weekdays={stats.weekDays} />}
-          last={<ContributionComparison counts={stats.total} />}
-        />
-        <Row>
-          <Years dates={stats.dates.sum} />
-        </Row>
-        <Row>
-          <YearlyStatistics
-            dates={stats.dates.sum}
-            repos={stats.repositories}
+    return {
+      isLoading: false,
+      content: (
+        <div className="app__content">
+          <Header />
+          <Row
+            type={RowType.FIRST_THIRD}
+            first={<UserCard accountStats={accountStats} />}
+            last={<Statistics counts={stats.total.sum} />}
           />
-        </Row>
-        <Row>
-          <Timeline dates={stats.dates} />
-        </Row>
-        <Footer />
-      </div>
-    );
-  }
+          <Row>
+            <Daytime weekDays={stats.weekDays.sum} />
+          </Row>
+          <Row>
+            <DaytimeComparison weekDays={stats.weekDays} />
+          </Row>
+          <Row
+            type={RowType.LAST_THIRD}
+            first={<WeekdayComparison weekdays={stats.weekDays} />}
+            last={<ContributionComparison counts={stats.total} />}
+          />
+          <Row>
+            <Years dates={stats.dates.sum} />
+          </Row>
+          <Row>
+            <YearlyStatistics
+              dates={stats.dates.sum}
+              repos={stats.repositories}
+            />
+          </Row>
+          <Row>
+            <Timeline dates={stats.dates} />
+          </Row>
+          <Footer />
+        </div>
+      ),
+    };
+  }, [stats, accountStats]);
 
   return (
     <div
-      className={['app', stats ? 'app--loaded' : ''].filter(Boolean).join(' ')}
+      className={['app', !isLoading ? 'app--loaded' : '']
+        .filter(Boolean)
+        .join(' ')}
       style={style}
     >
       {content}
-      <Loading hidden={!!stats} />
+      <Loading hidden={!isLoading} />
     </div>
   );
 }

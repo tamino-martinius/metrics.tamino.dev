@@ -25,6 +25,32 @@ export class Data {
     }
     return stats;
   }
+  async getAccountStats(): Promise<AccountStats> {
+    const startTime = Date.now();
+    const responses = await Promise.all(accountUrls.map((url) => fetch(url)));
+    const accounts: AccountStats[] = await Promise.all(
+      responses.map((r) => r.json()),
+    );
+    const accountStats = accounts.reduce<AccountStats>(
+      (acc, account) => {
+        Object.assign(acc.organizations, account.organizations);
+        Object.assign(acc.languageColors, account.languageColors);
+        acc.repositories.push(...account.repositories);
+        return acc;
+      },
+      {
+        user: accounts[0].user,
+        organizations: {},
+        languageColors: {},
+        repositories: [],
+      },
+    );
+    const duration = Date.now() - startTime;
+    if (duration < MIN_WAIT_DURATION) {
+      await Util.waitFor(MIN_WAIT_DURATION - duration);
+    }
+    return accountStats;
+  }
 }
 
 export default Data;

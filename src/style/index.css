@@ -275,20 +275,6 @@ a {
   margin: 6px 10px 20px 0;
 }
 
-.about-me__legend {
-  grid-row-gap: 4px;
-  width: 268px;
-}
-
-.about-me__avatar {
-  border-radius: 999px;
-  width: 29px;
-  height: 29px;
-  position: absolute;
-  top: 5px;
-  right: 5px;
-}
-
 .statistics .count-to {
   display: inline-block;
   width: 55px;
@@ -533,12 +519,12 @@ a {
 }
 
 .chart__axis--x {
+  padding: 10px 0;
   padding-top: 5px;
   border-top: 1px solid #F2F4F6;
   display: flex;
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 0;
 }
 
 .chart__axis--x > * {
