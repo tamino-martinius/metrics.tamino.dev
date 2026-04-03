@@ -25,7 +25,7 @@ export const DaytimeChartCard: FC<DaytimeChartCardProps> = memo(({ data }) => {
       className="daytime-chart-card"
       title="Daytime Chart"
       graphs={graphs}
-      xLabels={HOUR_TITLES.filter((_, i) => i % 2 === 1)}
+      xLabels={HOUR_TITLES.filter((_, i) => i % 2 === 0)}
     />
   );
 });
