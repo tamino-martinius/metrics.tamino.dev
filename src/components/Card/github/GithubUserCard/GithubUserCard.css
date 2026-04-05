@@ -1,0 +1,22 @@
+.github-user-card {
+  height: 218px;
+}
+
+.github-user-card h4 {
+  padding-top: 18px;
+  padding-bottom: 3px;
+}
+
+.github-user-card__legend {
+  grid-row-gap: 4px;
+  width: 268px;
+}
+
+.github-user-card__avatar {
+  border-radius: 999px;
+  width: 29px;
+  height: 29px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}

@@ -3,7 +3,48 @@
   border-bottom: 1px solid var(--color-border-dark);
 }
 
-.header h1 {
+.header__content {
   max-width: var(--size-container);
   margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.header__tabs {
+  display: flex;
+  position: relative;
+}
+
+.header__tab {
+  outline: none;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-foreground-light);
+  padding: 0 16px;
+  cursor: pointer;
+  font-family: inherit;
+  line-height: 50px;
+}
+
+.header__tab--active {
+  color: var(--color-foreground);
+  cursor: default;
+}
+
+.header__bar {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: var(--color-blue);
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

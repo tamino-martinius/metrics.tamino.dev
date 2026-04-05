@@ -1,0 +1,19 @@
+.github-year-heatmap-card {
+  height: 290px;
+}
+
+.github-year-heatmap-card__highlights {
+  padding-top: 35px;
+}
+
+.github-year-heatmap-card__legend {
+  padding-top: 14px;
+  grid-row-gap: 8px;
+  width: 832px;
+}
+
+.github-year-heatmap-card .heatmap {
+  position: absolute;
+  top: 21px;
+  right: 21px;
+}

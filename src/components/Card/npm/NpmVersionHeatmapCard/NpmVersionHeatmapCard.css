@@ -1,0 +1,19 @@
+.npm-version-heatmap-card {
+  height: 290px;
+}
+
+.npm-version-heatmap-card__highlights {
+  padding-top: 35px;
+}
+
+.npm-version-heatmap-card__legend {
+  padding-top: 14px;
+  grid-row-gap: 8px;
+  width: 832px;
+}
+
+.npm-version-heatmap-card .heatmap {
+  position: absolute;
+  top: 21px;
+  right: 21px;
+}

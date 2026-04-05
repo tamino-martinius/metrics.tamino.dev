@@ -1,22 +1,32 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Footer } from '@/components/Layout/Footer';
-import { Header } from '@/components/Layout/Header';
+import { Header, type MetricsTab } from '@/components/Layout/Header';
 import { Loading } from '@/components/Loading/Loading';
 import { Row, RowType } from '@/components/shared/Row';
 import Data from '@/models/Data';
 import '@/style/index.css';
-import { UserCard } from './Card/UserCard/UserCard';
 import './App.css';
-import { DaytimeChartCard } from './Card/DaytimeChartCard/DaytimeChartCard';
-import { FollowersCard } from './Card/FollowersCard/FollowersCard';
-import { PopularReposCard } from './Card/PopularReposCard/PopularReposCard';
-import { TimelineCard } from './Card/TimelineCard/TimelineCard';
-import { TotalCountsCard } from './Card/TotalCountsCard/TotalCountsCard';
-import { VisibilityComparisionCard } from './Card/VisibilityComparisionCard/VisibilityComparisionCard';
-import { WeekdayChartCard } from './Card/WeekdarChartCard/WeekdayChartCard';
-import { WeekdayComparisonCard } from './Card/WeekdayComparisonCard/WeekdayComparisonCard';
-import { YearChartCard } from './Card/YearChartCard/YearChartCard';
-import { YearHeatmapCard } from './Card/YearHeatmapCard/YearHeatmapCard';
+
+// GitHub cards
+import { GithubDaytimeChartCard } from './Card/github/GithubDaytimeChartCard/GithubDaytimeChartCard';
+import { GithubFollowersCard } from './Card/github/GithubFollowersCard/GithubFollowersCard';
+import { GithubPopularReposCard } from './Card/github/GithubPopularReposCard/GithubPopularReposCard';
+import { GithubTimelineCard } from './Card/github/GithubTimelineCard/GithubTimelineCard';
+import { GithubTotalCountsCard } from './Card/github/GithubTotalCountsCard/GithubTotalCountsCard';
+import { GithubUserCard } from './Card/github/GithubUserCard/GithubUserCard';
+import { GithubVisibilityComparisionCard } from './Card/github/GithubVisibilityComparisionCard/GithubVisibilityComparisionCard';
+import { GithubWeekdayChartCard } from './Card/github/GithubWeekdayChartCard/GithubWeekdayChartCard';
+import { GithubWeekdayComparisonCard } from './Card/github/GithubWeekdayComparisonCard/GithubWeekdayComparisonCard';
+import { GithubYearChartCard } from './Card/github/GithubYearChartCard/GithubYearChartCard';
+import { GithubYearHeatmapCard } from './Card/github/GithubYearHeatmapCard/GithubYearHeatmapCard';
+import { NpmOrganizationsCard } from './Card/npm/NpmOrganizationsCard/NpmOrganizationsCard';
+// npm cards
+import { NpmOrgDetailCard } from './Card/npm/NpmOrgDetailCard/NpmOrgDetailCard';
+import { NpmOrgTimelineCard } from './Card/npm/NpmOrgTimelineCard/NpmOrgTimelineCard';
+import { NpmPublishDaytimeCard } from './Card/npm/NpmPublishDaytimeCard/NpmPublishDaytimeCard';
+import { NpmTotalCountsCard } from './Card/npm/NpmTotalCountsCard/NpmTotalCountsCard';
+import { NpmUserCard } from './Card/npm/NpmUserCard/NpmUserCard';
+import { NpmVersionHeatmapCard } from './Card/npm/NpmVersionHeatmapCard/NpmVersionHeatmapCard';
 
 const MIN_SCREEN_SIZE = 920;
 
@@ -44,6 +54,7 @@ const syncViewport = () => {
 export default function App({ style }: AppProps) {
   const dataRef = useRef(new Data());
   const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<MetricsTab>('github');
 
   useEffect(() => {
     dataRef.current.fetchData().then(() => setIsLoading(false));
@@ -51,46 +62,79 @@ export default function App({ style }: AppProps) {
 
   useEffect(syncViewport, []);
 
-  const content = useMemo(() => {
+  const githubContent = useMemo(() => {
     if (isLoading) return null;
-
     return (
-      <div className="app__content">
-        <Header />
+      <>
         <Row
           type={RowType.FIRST_THIRD}
-          first={<UserCard data={dataRef.current} />}
-          last={<TotalCountsCard data={dataRef.current} />}
+          first={<GithubUserCard data={dataRef.current} />}
+          last={<GithubTotalCountsCard data={dataRef.current} />}
         />
         <Row>
-          <DaytimeChartCard data={dataRef.current} />
+          <GithubDaytimeChartCard data={dataRef.current} />
         </Row>
         <Row>
-          <WeekdayChartCard data={dataRef.current} />
+          <GithubWeekdayChartCard data={dataRef.current} />
         </Row>
         <Row
           type={RowType.LAST_THIRD}
-          first={<WeekdayComparisonCard data={dataRef.current} />}
-          last={<VisibilityComparisionCard data={dataRef.current} />}
+          first={<GithubWeekdayComparisonCard data={dataRef.current} />}
+          last={<GithubVisibilityComparisionCard data={dataRef.current} />}
         />
         <Row>
-          <YearChartCard data={dataRef.current} />
+          <GithubYearChartCard data={dataRef.current} />
         </Row>
         <Row>
-          <YearHeatmapCard data={dataRef.current} />
+          <GithubYearHeatmapCard data={dataRef.current} />
         </Row>
         <Row
           type={RowType.LAST_THIRD}
-          first={<PopularReposCard data={dataRef.current} />}
-          last={<FollowersCard data={dataRef.current} />}
+          first={<GithubPopularReposCard data={dataRef.current} />}
+          last={<GithubFollowersCard data={dataRef.current} />}
         />
         <Row>
-          <TimelineCard data={dataRef.current} />
+          <GithubTimelineCard data={dataRef.current} />
         </Row>
-        <Footer />
-      </div>
+      </>
     );
   }, [isLoading]);
+
+  const npmContent = useMemo(() => {
+    if (isLoading) return null;
+    return (
+      <>
+        <Row
+          type={RowType.FIRST_THIRD}
+          first={<NpmUserCard data={dataRef.current} />}
+          last={<NpmTotalCountsCard data={dataRef.current} />}
+        />
+        <Row>
+          <NpmPublishDaytimeCard data={dataRef.current} />
+        </Row>
+        <Row>
+          <NpmOrgDetailCard data={dataRef.current} />
+        </Row>
+        <Row>
+          <NpmOrgTimelineCard data={dataRef.current} />
+        </Row>
+        <Row>
+          <NpmVersionHeatmapCard data={dataRef.current} />
+        </Row>
+        <Row>
+          <NpmOrganizationsCard data={dataRef.current} />
+        </Row>
+      </>
+    );
+  }, [isLoading]);
+
+  const content = isLoading ? null : (
+    <div className="app__content">
+      <Header activeTab={activeTab} onTabChange={setActiveTab} />
+      {activeTab === 'github' ? githubContent : npmContent}
+      <Footer />
+    </div>
+  );
 
   return (
     <div className={['app', !isLoading ? 'app--loaded' : ''].filter(Boolean).join(' ')} style={style}>

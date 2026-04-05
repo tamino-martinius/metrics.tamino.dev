@@ -22,3 +22,12 @@ export interface PrivatePublicCommitStats extends CommitStats {
 }
 
 export type MonthYearKey = `${Year}-${Month}`;
+
+export interface NpmPackageStats {
+  downloads: number;
+  versions: number;
+}
+
+export interface NpmOrganizationStats extends NpmPackageStats {
+  packages: number;
+}

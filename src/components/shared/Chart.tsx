@@ -27,6 +27,8 @@ interface ChartProps {
   /** Y-axis mapping; symlog compresses large values like a log scale while keeping 0 valid. */
   yScale?: ChartYScale;
   titleSlot?: JSX.Element;
+  /** Index where real data ends and projections begin. Values from this index onward render with dashed lines. */
+  projectionStartIndex?: number;
 }
 
 export const Chart: FC<ChartProps> = ({
@@ -37,6 +39,7 @@ export const Chart: FC<ChartProps> = ({
   className,
   yScale = 'linear',
   titleSlot,
+  projectionStartIndex,
 }) => {
   const [currentType, setCurrentType] = useState(type || ChartType.STACKED);
 
@@ -94,31 +97,86 @@ export const Chart: FC<ChartProps> = ({
       .curve(curveBasis)(values);
   };
 
+  const hasProjection = projectionStartIndex !== undefined && projectionStartIndex < xMax;
+
   const graphElements: JSX.Element[] = [];
   for (let i = 0; i < graphs.length; i += 1) {
     const graph = graphs[i];
-    graphElements.push(
-      <path
-        key={`area-${i}`}
-        className="chart__area"
-        style={
-          {
-            '--color': `var(--${graph.color})`,
-            d: `path("${createArea(graph.values, i)}")`,
-          } as React.CSSProperties
-        }
-      />,
-      <path
-        key={`line-${i}`}
-        className="chart__graph"
-        style={
-          {
-            '--color': `var(--${graph.color})`,
-            d: `path("${createPath(graph.values, i)}")`,
-          } as React.CSSProperties
-        }
-      />,
-    );
+    const colorStyle = { '--color': `var(--${graph.color})` } as React.CSSProperties;
+
+    if (hasProjection) {
+      // Past portion: solid line + normal area
+      const pastValues = graph.values.slice(0, projectionStartIndex + 1);
+      const pastY0 = y0.slice(0, projectionStartIndex + 1);
+      const pastArea = area<number>()
+        .x((_d, idx) => xScale(idx)!)
+        .y0(
+          (_d, idx) =>
+            (currentType === ChartType.COMPARE ? (i % 2 === 1 ? yScaleTop : yScaleBottom) : yScaleComplete)(
+              pastY0[idx] || 0,
+            )!,
+        )
+        .y1((d) => (currentType === ChartType.COMPARE ? (i % 2 === 1 ? yScaleTop : yScaleBottom) : yScaleComplete)(d)!)
+        .curve(curveBasis)(pastValues);
+
+      graphElements.push(
+        <path
+          key={`area-past-${i}`}
+          className="chart__area"
+          style={{ ...colorStyle, d: `path("${pastArea}")` } as React.CSSProperties}
+        />,
+        <path
+          key={`line-past-${i}`}
+          className="chart__graph"
+          style={{ ...colorStyle, d: `path("${createPath(pastValues, i)}")` } as React.CSSProperties}
+        />,
+      );
+
+      // Future portion: dashed line + dimmed area (overlap by 1 point for continuity)
+      const futureValues = graph.values.slice(projectionStartIndex);
+      const futureY0 = y0.slice(projectionStartIndex);
+      const futureXOffset = projectionStartIndex;
+      const futureArea = area<number>()
+        .x((_d, idx) => xScale(idx + futureXOffset)!)
+        .y0(
+          (_d, idx) =>
+            (currentType === ChartType.COMPARE ? (i % 2 === 1 ? yScaleTop : yScaleBottom) : yScaleComplete)(
+              futureY0[idx] || 0,
+            )!,
+        )
+        .y1((d) => (currentType === ChartType.COMPARE ? (i % 2 === 1 ? yScaleTop : yScaleBottom) : yScaleComplete)(d)!)
+        .curve(curveBasis)(futureValues);
+      const futureLine = line<number>()
+        .x((_d, idx) => xScale(idx + futureXOffset)!)
+        .y((d) => (currentType === ChartType.COMPARE ? (i % 2 === 1 ? yScaleTop : yScaleBottom) : yScaleComplete)(d)!)
+        .curve(curveBasis)(futureValues);
+
+      graphElements.push(
+        <path
+          key={`area-future-${i}`}
+          className="chart__area chart__area--projected"
+          style={{ ...colorStyle, d: `path("${futureArea}")` } as React.CSSProperties}
+        />,
+        <path
+          key={`line-future-${i}`}
+          className="chart__graph chart__graph--projected"
+          style={{ ...colorStyle, d: `path("${futureLine}")` } as React.CSSProperties}
+        />,
+      );
+    } else {
+      graphElements.push(
+        <path
+          key={`area-${i}`}
+          className="chart__area"
+          style={{ ...colorStyle, d: `path("${createArea(graph.values, i)}")` } as React.CSSProperties}
+        />,
+        <path
+          key={`line-${i}`}
+          className="chart__graph"
+          style={{ ...colorStyle, d: `path("${createPath(graph.values, i)}")` } as React.CSSProperties}
+        />,
+      );
+    }
     if (currentType === ChartType.STACKED) {
       y0 = graph.values;
     }
@@ -131,7 +189,8 @@ export const Chart: FC<ChartProps> = ({
     divider = (
       <path className="chart__divider" d={`M0,${~~(CHART_HEIGHT / 2)}L${CHART_WIDTH},${~~(CHART_HEIGHT / 2)}`} />
     );
-  } else {
+  } else if (!type) {
+    // Only show Lines/Stacked toggle when type is not explicitly set
     typeToggle = (
       <ButtonGroup
         labels={['Lines', 'Stacked']}

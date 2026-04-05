@@ -86,6 +86,14 @@
   opacity: 0;
 }
 
+.chart__graph--projected {
+  stroke-dasharray: 4 3;
+}
+
+.chart__area--projected {
+  opacity: 0.04;
+}
+
 .chart__divider {
   stroke: #7c8d9f;
 }

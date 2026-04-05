@@ -1,0 +1,9 @@
+.npm-download-heatmap-card {
+  height: 200px;
+}
+
+.npm-download-heatmap-card .heatmap {
+  position: absolute;
+  top: 21px;
+  right: 21px;
+}

@@ -1,0 +1,8 @@
+.npm-user-card {
+  height: 218px;
+}
+
+.npm-user-card__legend {
+  grid-row-gap: 4px;
+  width: 268px;
+}
