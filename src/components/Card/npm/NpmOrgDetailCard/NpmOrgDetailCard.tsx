@@ -3,6 +3,7 @@ import { Bar } from '@/components/shared/Bar';
 import { ButtonGroup } from '@/components/shared/ButtonGroup';
 import { Card } from '@/components/shared/Card';
 import { CountTo } from '@/components/shared/CountTo';
+import { Dropdown } from '@/components/shared/Dropdown';
 import { Legend } from '@/components/shared/Legend';
 import type Data from '@/models/Data';
 import type { DataPoint } from '@/types/ComponentStats';
@@ -98,17 +99,7 @@ export const NpmOrgDetailCard: FC<NpmOrgDetailCardProps> = memo(({ data }) => {
       titleSlot={
         <div className="npm-org-detail-card__title-controls">
           <ButtonGroup labels={MODES} values={[...MODES]} onValueChanged={setMode} />
-          <select
-            className="npm-org-detail-card__select"
-            value={selectedOrg}
-            onChange={(e) => setSelectedOrg(e.target.value)}
-          >
-            {orgNames.map((name) => (
-              <option key={name} value={name}>
-                {name}
-              </option>
-            ))}
-          </select>
+          <Dropdown labels={orgNames} values={orgNames} value={selectedOrg} onValueChanged={setSelectedOrg} />
         </div>
       }
     >

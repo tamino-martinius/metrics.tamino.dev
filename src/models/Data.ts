@@ -67,11 +67,14 @@ export class Data {
   #npmVersionsPerWeekday: Partial<Record<Weekday, number>> = {};
   #npmPackageStats: Record<string, NpmPackageStats> = {};
   #npmPackageStatsPerYear: Partial<Record<Year, Record<string, NpmPackageStats>>> = {};
+  #npmPackageStatsPerMonthAndYear: Partial<Record<MonthYearKey, Record<string, NpmPackageStats>>> = {};
   #npmOrganizationStats: Record<string, NpmOrganizationStats> = {};
   #npmOrganizationStatsPerYear: Partial<Record<Year, Record<string, NpmOrganizationStats>>> = {};
   #npmOrganizationStatsPerMonthAndYear: Partial<Record<MonthYearKey, Record<string, NpmOrganizationStats>>> = {};
   #npmOrganizationPackages: Record<string, string[]> = {};
   #npmPackageWeeklyDownloads: Record<string, number> = {};
+  #npmPackageDownloadsPerWeek: Record<string, Record<string, number>> = {}; // weekKey -> { pkgName -> downloads }
+  #npmWeekKeys: DateKey[] = [];
   #npmPackageDetails: Record<string, PackageDetails> = {};
   #npmYears: Year[] = [];
 
@@ -333,6 +336,29 @@ export class Data {
         }
         this.#npmPackageStatsPerYear[year][pkg.details.name].downloads += count;
 
+        // Per-package per-month-year downloads
+        if (!this.#npmPackageStatsPerMonthAndYear[monthYearKey]) {
+          this.#npmPackageStatsPerMonthAndYear[monthYearKey] = {};
+        }
+        if (!this.#npmPackageStatsPerMonthAndYear[monthYearKey][pkg.details.name]) {
+          this.#npmPackageStatsPerMonthAndYear[monthYearKey][pkg.details.name] = { downloads: 0, versions: 0 };
+        }
+        this.#npmPackageStatsPerMonthAndYear[monthYearKey][pkg.details.name].downloads += count;
+
+        // Per-package per-week downloads
+        const date = new Date(dateKey);
+        const day = date.getDay(); // 0=Sun
+        const mondayOffset = day === 0 ? -6 : 1 - day;
+        const monday = new Date(date);
+        monday.setDate(date.getDate() + mondayOffset);
+        const weekKey =
+          `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}` as DateKey;
+        if (!this.#npmPackageDownloadsPerWeek[weekKey]) {
+          this.#npmPackageDownloadsPerWeek[weekKey] = {};
+        }
+        this.#npmPackageDownloadsPerWeek[weekKey][pkg.details.name] =
+          (this.#npmPackageDownloadsPerWeek[weekKey][pkg.details.name] ?? 0) + count;
+
         // Per-organization per-year downloads
         if (!this.#npmOrganizationStatsPerYear[year]) {
           this.#npmOrganizationStatsPerYear[year] = {};
@@ -370,6 +396,15 @@ export class Data {
           this.#npmPackageStatsPerYear[year][pkg.details.name] = { downloads: 0, versions: 0 };
         }
         this.#npmPackageStatsPerYear[year][pkg.details.name].versions += count;
+
+        // Per-package per-month-year versions
+        if (!this.#npmPackageStatsPerMonthAndYear[monthYearKey]) {
+          this.#npmPackageStatsPerMonthAndYear[monthYearKey] = {};
+        }
+        if (!this.#npmPackageStatsPerMonthAndYear[monthYearKey][pkg.details.name]) {
+          this.#npmPackageStatsPerMonthAndYear[monthYearKey][pkg.details.name] = { downloads: 0, versions: 0 };
+        }
+        this.#npmPackageStatsPerMonthAndYear[monthYearKey][pkg.details.name].versions += count;
 
         if (!this.#npmOrganizationStatsPerYear[year]) {
           this.#npmOrganizationStatsPerYear[year] = {};
@@ -473,6 +508,9 @@ export class Data {
       const minYear = Math.min(...allYearKeys);
       this.#npmYears = Array.from({ length: new Date().getFullYear() - minYear + 1 }).map((_x, i) => minYear + i);
     }
+
+    // Sort week keys
+    this.#npmWeekKeys = (Object.keys(this.#npmPackageDownloadsPerWeek) as DateKey[]).sort();
   }
 
   async fetchData() {
@@ -600,6 +638,18 @@ export class Data {
 
   get npmPackageStatsPerYear() {
     return this.#npmPackageStatsPerYear;
+  }
+
+  get npmPackageStatsPerMonthAndYear() {
+    return this.#npmPackageStatsPerMonthAndYear;
+  }
+
+  get npmPackageDownloadsPerWeek() {
+    return this.#npmPackageDownloadsPerWeek;
+  }
+
+  get npmWeekKeys() {
+    return this.#npmWeekKeys;
   }
 
   get npmOrganizationPackages() {

@@ -1,0 +1,17 @@
+.dropdown {
+  margin-top: 3px;
+  outline: none;
+  border: 1px solid #e4e4e4;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #627386;
+  padding: 4px 24px 4px 10px;
+  cursor: pointer;
+  background: transparent;
+  font-family: inherit;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23627386' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}

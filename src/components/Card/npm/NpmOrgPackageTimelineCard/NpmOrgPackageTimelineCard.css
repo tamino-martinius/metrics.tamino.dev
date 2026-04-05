@@ -1,0 +1,17 @@
+.npm-org-package-timeline-card {
+  height: 360px;
+}
+
+.npm-org-package-timeline-card__title-controls {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 38px;
+}
+
+.npm-org-package-timeline-card__title-controls .button-group {
+  position: static;
+}
