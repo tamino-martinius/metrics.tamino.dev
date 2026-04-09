@@ -37,7 +37,7 @@ export const Loading: FC<LoadingProps> = ({ hidden }) => {
         <path className="loading__line loading__line--masked loading__line--1" mask="url(#loading__mask)" d={line1} />
         <path className="loading__line loading__line--masked loading__line--2" mask="url(#loading__mask)" d={line2} />
       </svg>
-      <div className="loading__title">Loading Git Stats</div>
+      <div className="loading__title">Loading Metrics</div>
     </div>
   );
 };

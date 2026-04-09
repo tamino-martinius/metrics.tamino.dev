@@ -19,7 +19,7 @@ import { splitDateKey, splitHourKey } from '@/util/recordKey';
 
 const GITHUB_ACCOUNTS = ['tamino-martinius', 'tamino-cookieai'];
 const NPM_ACCOUNT = 'tamino-martinius';
-const MIN_WAIT_DURATION = 3000;
+const MIN_WAIT_DURATION = 1_650;
 
 const accountUrls = GITHUB_ACCOUNTS.map(
   (account) => `https://raw.githubusercontent.com/${account}/github-stats/${account}/data/stats.json`,
