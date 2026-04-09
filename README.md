@@ -2,7 +2,7 @@
 
 [Visit Website](https://metrics.tamino.dev)
 
-![Preview](public/preview.gif?raw=true)
+![Preview](public/preview.mp4)
 
 A personal metrics dashboard that visualizes GitHub contribution data and npm package statistics. Data is fetched at runtime from companion stats repositories — no local data files are needed.
 
